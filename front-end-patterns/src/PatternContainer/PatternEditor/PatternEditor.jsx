@@ -4,19 +4,6 @@ const PatternEditor = (props) => {
   console.log('this is patternToEdit', props.patternToEdit);
   console.log('this is props.patternToEdit.text in PatternEditor', props.patternToEdit.text);
 
-  // const typeMapper = props.patternTypes.map((patternType) => {
-  //   console.log(patternType)
-  //   if(patternType.description === props.patternToEdit.patternType.description){
-  //     return(
-  //       <select name='patternType' onChange={props.handleFormChange}>{props.patternTypes.map((patternType) => {
-  //         return(
-  //           <option key={patternType._id} name='patternType' value={patternType._id}>{patternType.patternType}</option>
-  //         )
-  //       })}</select>
-  //     )
-  //   }
-  // })
-
   const typeMapper = props.patternTypes.map((patternType) => {
     if(patternType.description !== props.patternToEdit.patternType.description){
           return(

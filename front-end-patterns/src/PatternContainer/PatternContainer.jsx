@@ -77,7 +77,6 @@ getPatternTypes = async () => {
   }
 }
 
-
 apiCall = async (array) => {
 	for (let i = 0; i < array.length; i++) {
 		await axios
@@ -129,6 +128,22 @@ apiCall = async (array) => {
       console.log(err);
     }
   }
+
+  deletePatternType = async (id, e) => {
+    console.log('this is the delete id', id);
+    e.preventDefault();
+    try{
+      const deleteType = await fetch('http://localhost:9000/api/v1/types/' + id, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      const deleteTypeJson = await deleteType.json();
+      this.setState({patternTypes: this.state.patternTypes.filter((patternType, i) => patternType._id !== id)});
+    } catch(err){
+      console.log(err, 'this was the delete error');
+    }
+  }
+
   deletePattern = async (id, e) => {
     console.log('this is the delete id ', id);
     e.preventDefault();
@@ -143,6 +158,7 @@ apiCall = async (array) => {
       console.log(err, 'this was the delete error');
     }
   }
+
   editPattern = async (e) => {
     e.preventDefault();
     console.log('this is state.patternToEdit', this.state.patternToEdit);
@@ -253,7 +269,7 @@ apiCall = async (array) => {
         <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
         <button onClick={this.showCreate}>Create a Pattern</button>
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
-        {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
+        {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
       </div>
     )

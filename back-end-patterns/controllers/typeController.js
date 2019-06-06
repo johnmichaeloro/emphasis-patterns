@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     const populatedType = await PatternType.findById(createdType).populate('pattern');
     res.json({
       status: 200,
-      data: createdType, populatedType
+      data: populatedType
     });
   } catch(err){
     console.log(err);

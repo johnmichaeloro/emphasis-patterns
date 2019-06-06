@@ -21,15 +21,18 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res) => {
   console.log(req.body, 'this is req.body');
   try{
-    //I NEED TO QUERY FOR THE PATTERN TYPE PATTERNTYPE.FIND WHERE THE TYPE NAME MATCHES THE ONE FROM REQ.BODY THEN I GRAB
     const createdPattern = await Pattern.create(req.body);
     const populatedPattern = await Pattern.findById(createdPattern).populate('patternType').populate('user');
-    console.log("this is the created pattern " + createdPattern);
+    const pushedType = await PatternType.findById(req.body.patternType);
+    pushedType.patterns.push(populatedPattern.id);
+    await pushedType.save();
+    const populatedType = await pushedType.populate('pattern');
     res.json({
       status: 200,
       data: populatedPattern
     });
   } catch(err) {
+    console.log(err);
     res.send(err);
   }
 });
