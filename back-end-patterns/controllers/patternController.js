@@ -8,6 +8,7 @@ router.get('/', async (req, res, next) => {
   console.log('this is get all patterns');
   try{
     const allPatterns = await Pattern.find().populate('patternType').populate('user');
+    console.log(allPatterns, 'this is all of the patterns');
     res.json({
       status: 200,
       data: allPatterns
@@ -26,7 +27,7 @@ router.post('/', async (req, res) => {
     console.log("this is the created pattern " + createdPattern);
     res.json({
       status: 200,
-      data: createdPattern
+      data: populatedPattern
     });
   } catch(err) {
     res.send(err);

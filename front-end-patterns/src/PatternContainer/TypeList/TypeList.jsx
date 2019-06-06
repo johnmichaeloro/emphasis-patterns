@@ -6,6 +6,8 @@ const TypeList = (props) => {
       <li key={patternType._id}>
         <span>Pattern Type: {patternType.patternType}</span><br/>
         <span>Description: {patternType.description}</span><br/>
+        <button>Edit</button>
+        <button>Delete</button>
       </li>
     )
   })
