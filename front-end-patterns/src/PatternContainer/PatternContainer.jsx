@@ -44,6 +44,7 @@ class PatternContainer extends Component {
       createShowing: false,
       listShowing: true,
       typeEditorShowing: false,
+      typeCreatorShowing: false,
     }
   }
 
@@ -101,7 +102,8 @@ getPatternTypes = async () => {
       const parsedResponse = await createdType.json();
       console.log('this is the parsedResponse in addType', parsedResponse);
       this.setState({
-        patternTypes: [...this.state.patternTypes, parsedResponse.data]
+        patternTypes: [...this.state.patternTypes, parsedResponse.data],
+        typeCreatorShowing: false
       });
     } catch(err){
       console.log(err);
@@ -228,6 +230,7 @@ apiCall = async (array) => {
       this.setState({
         patternTypes: editedPatternTypeArray,
         typeEditorShowing: false,
+        listShowing: true
       });
     } catch(err){
       console.log(err);
@@ -334,6 +337,7 @@ apiCall = async (array) => {
     console.log('this is showTypeEditor', patternType);
     this.setState({
       typeEditorShowing: true,
+      listShowing: false,
       typeToEdit: patternType
     })
   }
@@ -346,6 +350,13 @@ apiCall = async (array) => {
       modalShowing: true,
       patternToEdit: pattern
     }, () => console.log(this.state.modalShowing));
+  }
+
+  showTypeCreator = () => {
+    console.log('this is show type creator');
+    this.setState({
+      typeCreatorShowing: true
+    })
   }
 
   showCreate = () => {
@@ -363,15 +374,25 @@ apiCall = async (array) => {
     return(
       <div>
         <h1>Pattern Dictionary</h1>
+
         <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
+
         <button onClick={this.showCreate}>Create a Pattern</button><br/>
+
         <br/>
-        <button>Create a Type</button>
-        <CreateType addPatternType={this.addPatternType} />
+
+        <button onClick={this.showTypeCreator}>Create a Type</button>
+
+        {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} /> : null}
+
         {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} /> : null}
+
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
+
         {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
+
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
+
       </div>
     )
   }
