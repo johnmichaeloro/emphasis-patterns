@@ -1,5 +1,7 @@
 import React from 'react';
 
+//I would need to build a function that would activate on Click and show all of the entries that have ids associated with the category clicked. I would use a ForEach instead of .map. I would need to amend patternList accordingly.
+
 const TypeList = (props) => {
   const typeMapper = props.patternTypes.map((patternType) => {
     console.log('typelist', patternType);
