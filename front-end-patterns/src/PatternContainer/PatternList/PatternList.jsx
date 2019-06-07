@@ -35,21 +35,42 @@ const PatternList = (props) => {
       }
 
     })
-    return(
-      <li key={pattern._id}>
-        <span>Title:{pattern.title}</span><br/>
-        <span>Author:{pattern.author}</span><br/>
-        <span>Publication:{pattern.publication}</span><br/>
-        <span>Year:{pattern.year}</span><br/>
-        <span>URL:{pattern.url}</span><br/>
-        <span>Pattern Type:{pattern.patternType.patternType}</span><br/>
-        <span>Description:{pattern.patternType.description}</span><br/>
-        <span>Text:{sentenceColorer}</span><br/>
-        <span>Commentary:{pattern.commentary}</span><br/>
-        <button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-        <button onClick={props.showModal.bind(null, pattern)}>Edit</button>
-      </li>
-    )
+    if (pattern && pattern.patternType) {
+      return(
+
+        <li key={pattern._id}>
+          <span>Title:{pattern.title}</span><br/>
+          <span>Author:{pattern.author}</span><br/>
+          <span>Publication:{pattern.publication}</span><br/>
+          <span>Year:{pattern.year}</span><br/>
+          <span>URL:{pattern.url}</span><br/>
+          <span>Pattern Type:{pattern.patternType.patternType}</span><br/>
+          <span>Description:{pattern.patternType.description}</span><br/>
+          <span>Text:{sentenceColorer}</span><br/>
+          <span>Commentary:{pattern.commentary}</span><br/>
+          <button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+          <button onClick={props.showModal.bind(null, pattern)}>Edit</button>
+        </li>
+      )
+    } else {
+      return(
+
+        <li key={pattern._id}>
+          <span>Title:{pattern.title}</span><br/>
+          <span>Author:{pattern.author}</span><br/>
+          <span>Publication:{pattern.publication}</span><br/>
+          <span>Year:{pattern.year}</span><br/>
+          <span>URL:{pattern.url}</span><br/>
+          <span>Pattern Type: none</span><br/>
+          <span>Description: none</span><br/>
+          <span>Text:{sentenceColorer}</span><br/>
+          <span>Commentary:{pattern.commentary}</span><br/>
+          <button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+          <button onClick={props.showModal.bind(null, pattern)}>Edit</button>
+        </li>
+      )
+    }
+
   })
   return(
     <div>

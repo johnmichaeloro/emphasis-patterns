@@ -153,7 +153,21 @@ apiCall = async (array) => {
         credentials: 'include'
       });
       const deletePatternJson = await deletePattern.json();
-      this.setState({patterns: this.state.patterns.filter((pattern, i) => pattern._id !== id)});
+      let parentIndexToDel = -1;
+      let childIndexToDel = -1;
+      this.state.patternTypes.forEach((patternType, index) => {
+        patternType.patterns.forEach((pattern, childIndex) => {
+          if (pattern == deletePatternJson.data._id) {
+            parentIndexToDel = index;
+            childIndexToDel = childIndex
+          }
+        });
+      })
+      console.log(1, this.state.patternTypes[parentIndexToDel].patterns.length);
+      this.state.patternTypes[parentIndexToDel].patterns.splice(childIndexToDel, 1);
+      this.setState({
+        patterns: this.state.patterns.filter((pattern, i) => pattern._id !== id)
+      });
     } catch(err) {
       console.log(err, 'this was the delete error');
     }

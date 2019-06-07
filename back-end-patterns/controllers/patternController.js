@@ -64,7 +64,19 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try{
+
     const deletedPattern = await Pattern.findByIdAndRemove(req.params.id);
+    const updatedType = await PatternType.findOne({'patterns': req.params.id});
+    for(let i = 0; i < updatedType.patterns.length; i++){
+      console.log(0, req.params.id, updatedType.patterns[i]);
+      if(req.params.id === (updatedType.patterns[i] + "")){
+        console.log(1, updatedType.patterns.length);
+        const currentPatternIndex = updatedType.patterns[i];
+        updatedType.patterns = updatedType.patterns.splice(currentPatternIndex, 1);
+        console.log(2, updatedType.patterns.length);
+        await updatedType.save();
+      }
+    }
     res.json({
       status: 200,
       data: deletedPattern
