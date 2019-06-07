@@ -4,6 +4,7 @@ import CreatePattern from './CreatePattern/CreatePattern';
 import PatternList from './PatternList/PatternList';
 import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
+import CreateType from './CreateType/CreateType';
 
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
@@ -39,10 +40,12 @@ class PatternContainer extends Component {
       listShowing: true,
     }
   }
+
   componentDidMount(){
       this.getPatternTypes();
       this.getPatterns();
   }
+
   getPatterns = async () => {
     console.log("getting patterns");
     try {
@@ -76,6 +79,28 @@ getPatternTypes = async () => {
     console.log(err);
   }
 }
+
+  addPatternType = async (patternType, e) => {
+    e.preventDefault();
+    console.log('made it to addPatternType', patternType);
+    try{
+      const createdType = await fetch('http://localhost:9000/api/v1/types', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(patternType),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const parsedResponse = await createdType.json();
+      console.log('this is the parsedResponse in addType', parsedResponse);
+      this.setState({
+        patternTypes: [...this.state.patternTypes, parsedResponse.data]
+      });
+    } catch(err){
+      console.log(err);
+    }
+  }
 
 apiCall = async (array) => {
 	for (let i = 0; i < array.length; i++) {
@@ -118,6 +143,7 @@ apiCall = async (array) => {
       });
       const parsedResponse = await createdPattern.json();
       console.log('this is the parsed response', parsedResponse);
+      //Here I need to add the new id to the pattern type array
       this.setState({
         patterns: [...this.state.patterns, parsedResponse.data],
         createShowing: false,
@@ -281,7 +307,10 @@ apiCall = async (array) => {
       <div>
         <h1>Pattern Dictionary</h1>
         <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
-        <button onClick={this.showCreate}>Create a Pattern</button>
+        <button onClick={this.showCreate}>Create a Pattern</button><br/>
+        <br/>
+        <button>Create a Type</button>
+        <CreateType addPatternType={this.addPatternType} />
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
         {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}

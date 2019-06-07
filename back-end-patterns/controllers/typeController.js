@@ -6,7 +6,7 @@ const Pattern = require('../models/pattern');
 router.get('/', async (req, res, next) => {
   console.log('this is get all pattern types');
   try{
-    const allTypes = await PatternType.find().populate('pattern');
+    const allTypes = await PatternType.find();
     res.json({
       status: 200,
       data: allTypes
@@ -20,10 +20,9 @@ router.post('/', async (req, res) => {
   console.log(req.body, 'this is req.body');
   try{
     const createdType = await PatternType.create(req.body);
-    const populatedType = await PatternType.findById(createdType).populate('pattern');
     res.json({
       status: 200,
-      data: createdType, populatedType
+      data: createdType
     });
   } catch(err){
     console.log(err);
@@ -34,7 +33,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   console.log('inside pattern type put route');
   try {
-    const updatedType = await PatternType.findByIdAndUpdate(req.params.id, req.body, {new: true}).populate('pattern'); //this might not work a populate might not work here
+    const updatedType = await PatternType.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.json({
       status: 200,
       data: updatedType

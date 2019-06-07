@@ -34,11 +34,6 @@ class CreatePattern extends Component {
   })
 
   render(){
-    // const descriptionMapper = this.props.patternTypes.map((patternType) => {
-    //   if(patternType._id === this.state.patternType){
-    //     return patternType.description;
-    //   }
-    // })
 
     let descriptionMapper;
     this.props.patternTypes.forEach((patternType) => {

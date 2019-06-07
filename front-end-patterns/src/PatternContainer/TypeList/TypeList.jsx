@@ -2,6 +2,7 @@ import React from 'react';
 
 const TypeList = (props) => {
   const typeMapper = props.patternTypes.map((patternType) => {
+    console.log('typelist', patternType);
     return(
       <li key={patternType._id}>
         <span>Associated Patterns: {patternType.patterns.join(', ')}</span><br/>
