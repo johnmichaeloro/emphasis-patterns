@@ -8,7 +8,7 @@ const TypeList = (props) => {
         <span>Associated Patterns: {patternType.patterns.join(', ')}</span><br/>
         <span>Pattern Type: {patternType.patternType}</span><br/>
         <span>Description: {patternType.description}</span><br/>
-        <button>Edit</button>
+        <button onClick={props.showTypeEditor.bind(null, patternType)}>Edit</button>
         <button onClick={props.deletePatternType.bind(null, patternType._id)}>Delete</button>
       </li>
     )

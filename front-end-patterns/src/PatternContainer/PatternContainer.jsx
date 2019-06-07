@@ -5,6 +5,7 @@ import PatternList from './PatternList/PatternList';
 import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
+import TypeEditor from './TypeEditor/TypeEditor';
 
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
@@ -18,6 +19,10 @@ class PatternContainer extends Component {
     this.state = {
       patternTypes: [],
       patterns: [],
+      typeToEdit: {
+        patternType: '',
+        description: ''
+      },
       patternToEdit: {
         _id: null,
         user: null,
@@ -38,6 +43,7 @@ class PatternContainer extends Component {
       modalShowing: false,
       createShowing: false,
       listShowing: true,
+      typeEditorShowing: false,
     }
   }
 
@@ -150,6 +156,7 @@ apiCall = async (array) => {
         listShowing: true,
       });
       console.log(this.state.patterns);
+      this.getPatternTypes();
     } catch(err) {
       console.log(err);
     }
@@ -196,6 +203,34 @@ apiCall = async (array) => {
       });
     } catch(err) {
       console.log(err, 'this was the delete error');
+    }
+  }
+
+  editPatternType = async (e) => {
+    e.preventDefault();
+    try{
+      const editTypeResponse = await fetch('http://localhost:9000/api/v1/types/' + this.state.typeToEdit._id, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(this.state.typeToEdit),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('this is the editTypeResponse', editTypeResponse);
+      const parsedResponse = await editTypeResponse.json();
+      const editedPatternTypeArray = this.state.patternTypes.map((patternType) => {
+        if(patternType._id === this.state.typeToEdit._id){
+          patternType = parsedResponse.data
+        }
+        return patternType
+      });
+      this.setState({
+        patternTypes: editedPatternTypeArray,
+        typeEditorShowing: false,
+      });
+    } catch(err){
+      console.log(err);
     }
   }
 
@@ -273,6 +308,17 @@ apiCall = async (array) => {
     }
 
   }
+
+  handleTypeChange = (e) => {
+    console.log('this is handleTypeChange');
+    this.setState({
+      typeToEdit: {
+        ...this.state.typeToEdit,
+        [e.target.name]: e.target.value
+      }
+    })
+  }
+
   handleFormChange = (e) => {
     console.log('this is handleFormChange');
     //can I do an if check here to see if the value is {revealedText}?
@@ -283,6 +329,15 @@ apiCall = async (array) => {
       }
     })
   }
+
+  showTypeEditor = (patternType) => {
+    console.log('this is showTypeEditor', patternType);
+    this.setState({
+      typeEditorShowing: true,
+      typeToEdit: patternType
+    })
+  }
+
   showModal = (pattern) =>  {
     console.log("this is show modal");
     this.setState({
@@ -292,6 +347,7 @@ apiCall = async (array) => {
       patternToEdit: pattern
     }, () => console.log(this.state.modalShowing));
   }
+
   showCreate = () => {
     console.log('this is show create');
     this.setState({
@@ -299,6 +355,7 @@ apiCall = async (array) => {
       listShowing: false,
     })
   }
+
   render(){
     console.log('this is state.patternTypes', this.state.patternTypes);
     console.log('this is this.state.patterns in PatternContainer', this.state.patterns);
@@ -311,8 +368,9 @@ apiCall = async (array) => {
         <br/>
         <button>Create a Type</button>
         <CreateType addPatternType={this.addPatternType} />
+        {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} /> : null}
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
-        {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
+        {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
       </div>
     )
