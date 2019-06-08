@@ -62,10 +62,9 @@ class Login extends React.Component {
           Password: <input type='password' name='password' onChange={this.handleChange} />
           <input type='submit' />
         </form>
-        <button onClick={this.handleLogout}>Logout</button>
         <br/>
-        {this.props.loggedIn ? <div><Registration /> <PatternContainer /></div> : null}
-
+        {this.props.loggedIn ? <div><button onClick={this.handleLogout}>Logout</button><Registration /></div> : null}
+        <PatternContainer loggedIn={this.props.loggedIn}/>
       </div>
     )
   }

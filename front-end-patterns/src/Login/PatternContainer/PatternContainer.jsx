@@ -14,8 +14,8 @@ import compileData from './js/compileData';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 class PatternContainer extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       patternTypes: [],
       patterns: [],
@@ -384,15 +384,17 @@ apiCall = async (array) => {
     console.log(this.state);
     return(
       <div>
-        <h1><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of</span><span style={{backgroundColor: '#59F1FF'}}> Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></h1>
+        <h1><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></h1>
 
         <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
 
+        {this.props.loggedIn ? <div>
         <button onClick={this.showCreate}>Create a Pattern</button><br/>
 
         <br/>
 
         <button onClick={this.showTypeCreator}>Create a Type</button>
+        </div> : null}
 
         {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} /> : null}
 
@@ -400,9 +402,9 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} getPatterns={this.getPatterns} />
+        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} getPatterns={this.getPatterns} loggedIn={this.props.loggedIn}/>
 
-        {this.state.listShowing ? <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/> : null}
+        {this.state.listShowing ? <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn}/> : null}
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 

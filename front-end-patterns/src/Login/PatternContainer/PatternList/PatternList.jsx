@@ -52,8 +52,8 @@ const PatternList = (props) => {
           <span>Description:{pattern.patternType.description}</span><br/>
           <span>Text:{sentenceColorer}</span><br/>
           <span>Commentary:{pattern.commentary}</span><br/>
-          <button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-          <button onClick={props.showModal.bind(null, pattern)}>Edit</button>
+          {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+          <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
         </li>
       )
     } else {

@@ -11,8 +11,8 @@ const TypeList = (props) => {
           <span>Associated Patterns: {patternType.patterns.join(', ')}</span><br/>
           <span>Pattern Type: {patternType.patternType}</span><br/>
           <span>Description: {patternType.description}</span><br/>
-          <button onClick={props.showTypeEditor.bind(null, patternType)}>Edit</button>
-          <button onClick={props.deletePatternType.bind(null, patternType._id)}>Delete</button>
+          {props.loggedIn ? <div><button onClick={props.showTypeEditor.bind(null, patternType)}>Edit</button>
+          <button onClick={props.deletePatternType.bind(null, patternType._id)}>Delete</button></div> : null}
         </li>
       </div>
     )
