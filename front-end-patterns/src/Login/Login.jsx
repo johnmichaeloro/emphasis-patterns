@@ -1,8 +1,10 @@
 import React from 'react';
+import Registration from './Registration/Registration';
+import PatternContainer from './PatternContainer/PatternContainer';
 
 class Login extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       username: '',
       password: '',
@@ -28,6 +30,7 @@ class Login extends React.Component {
       });
       const parsedResponse = await loginResponse.json();
       if(parsedResponse.data === 'login successful'){
+        this.props.loginToggle();
         console.log('login successful');
       }
     } catch(err){
@@ -44,6 +47,7 @@ class Login extends React.Component {
       });
       const parsedResponse = await logoutResponse.json();
       if(parsedResponse.data === 'user logged out'){
+        this.props.logoutToggle();
         console.log('logout successful');
       }
     } catch(err){
@@ -59,6 +63,9 @@ class Login extends React.Component {
           <input type='submit' />
         </form>
         <button onClick={this.handleLogout}>Logout</button>
+        <br/>
+        {this.props.loggedIn ? <div><Registration /> <PatternContainer /></div> : null}
+
       </div>
     )
   }

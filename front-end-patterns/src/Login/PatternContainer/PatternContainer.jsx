@@ -52,13 +52,6 @@ class PatternContainer extends Component {
       this.getPatternTypes();
   }
 
-//I need to create an onClick function for a div that getsPatterns. Really, it should be as simple as creating a clickable div that contains the getPatterns function instead of having it happen on component did mount. I would need to wrap patternlist in a clickable div below. I would have to set the state of PatternList's toggle to false on load, and set it to true in getPatterns. I would have to hide the other components.
-//1. Hide patternList on load: remove getPatterns from componentDidMount. Set toggle to false. ***DONE***
-//2. Place patternList within it's own ternary so it doesn't show on load, only on getPatterns. ***DONE***
-//3. Create a clickable div for TypeList. The click calls getpatterns and shows the pattern list. ***DONE***
-//3.5 I need to fix the CreatePattern menu so an empty option appears. ***DONE***
-//4. Place forEach in the patternList so only the associated patterns are shown. ***DONE***
-
   getPatterns = async (patternType) => {
     console.log("getting patterns");
     try {
@@ -391,7 +384,7 @@ apiCall = async (array) => {
     console.log(this.state);
     return(
       <div>
-        <h1>Pattern Dictionary</h1>
+        <h1><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of</span><span style={{backgroundColor: '#59F1FF'}}> Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></h1>
 
         <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
 

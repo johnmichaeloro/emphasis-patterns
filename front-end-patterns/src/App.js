@@ -1,16 +1,28 @@
 import React from 'react';
 import './App.css';
-import PatternContainer from './PatternContainer/PatternContainer';
-import Registration from './Registration/Registration';
 import Login from './Login/Login';
 
 class App extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      loggedIn: false
+    }
+  }
+  loginToggle = () => {
+    this.setState({
+      loggedIn: true
+    })
+  }
+  logoutToggle = () => {
+    this.setState({
+      loggedIn: false
+    })
+  }
   render(){
     return(
       <div>
-        <Registration />
-        <Login />
-        <PatternContainer />
+        <Login loggedIn={this.state.loggedIn} loginToggle={this.loginToggle} logoutToggle={this.logoutToggle}/>
       </div>
     )
   }
