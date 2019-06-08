@@ -68,7 +68,7 @@ class CreatePattern extends Component {
           </label>
           <br/>
           <label>
-            Pattern Type: <select name='patternType' onChange={this.updatePattern}>{this.typeMapper}</select>
+            Pattern Type: <select name='patternType' onChange={this.updatePattern}><option>Choose a type</option>{this.typeMapper}</select>
           </label>
           <br/>
           <label>

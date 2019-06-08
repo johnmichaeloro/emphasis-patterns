@@ -42,7 +42,7 @@ class PatternContainer extends Component {
       },
       modalShowing: false,
       createShowing: false,
-      listShowing: true,
+      listShowing: false,
       typeEditorShowing: false,
       typeCreatorShowing: false,
     }
@@ -50,10 +50,16 @@ class PatternContainer extends Component {
 
   componentDidMount(){
       this.getPatternTypes();
-      this.getPatterns();
   }
 
-  getPatterns = async () => {
+//I need to create an onClick function for a div that getsPatterns. Really, it should be as simple as creating a clickable div that contains the getPatterns function instead of having it happen on component did mount. I would need to wrap patternlist in a clickable div below. I would have to set the state of PatternList's toggle to false on load, and set it to true in getPatterns. I would have to hide the other components.
+//1. Hide patternList on load: remove getPatterns from componentDidMount. Set toggle to false. ***DONE***
+//2. Place patternList within it's own ternary so it doesn't show on load, only on getPatterns. ***DONE***
+//3. Create a clickable div for TypeList. The click calls getpatterns and shows the pattern list. ***DONE***
+//3.5 I need to fix the CreatePattern menu so an empty option appears. ***DONE***
+//4. Place forEach in the patternList so only the associated patterns are shown. ***DONE***
+
+  getPatterns = async (patternType) => {
     console.log("getting patterns");
     try {
       const response = await fetch('http://localhost:9000/api/v1/patterns', {
@@ -63,7 +69,19 @@ class PatternContainer extends Component {
         throw Error(response.statusText);
       }
       const patternsParsed = await response.json();
-      this.setState({patterns: patternsParsed.data})
+      console.log('this is the patternsParsed', patternsParsed.data);
+      let filteredPatterns = [];
+      await patternsParsed.data.forEach((pattern) => {
+        console.log('THIS IS THE PATTERN & PATTERN TYPE FROM PARSED DATA', pattern, patternType);
+        if(pattern.patternType.patternType === patternType.patternType){
+          console.log('pattern in patternsParsed *****!!!!!', pattern);
+          filteredPatterns.push(pattern);
+        }
+      })
+      this.setState({
+        patterns: filteredPatterns,
+        listShowing: true
+      })
     } catch(err) {
       console.log(err);
     }
@@ -389,7 +407,9 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        {this.state.listShowing ? <div><TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} /> <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/></div> : null}
+        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} getPatterns={this.getPatterns} />
+
+        {this.state.listShowing ? <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern}/> : null}
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 

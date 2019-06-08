@@ -1,6 +1,10 @@
 import React from 'react';
 import sentenceArrayMaker from '../js/sentences';
 
+//To filter this according to category, I would need to pass the associated ids as props. I would need to turn patternMapper into a forEach. Then I would need to do another for each between patternMapper and textMapper. This foreach would go through the associated ids. There would be an if check that would say, if the ids match, return this pattern. Then the pattern would enter the textmapper and be represented on the page.
+
+
+
 const PatternList = (props) => {
   console.log('this is props.patterns in PatternList', props.patterns);
   const patternMapper = props.patterns.map((pattern) => {
