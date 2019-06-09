@@ -2,21 +2,13 @@
 
 body {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
 }
 
 .mainTitle {
   font-family: 'Permanent Marker', cursive;
   font-size: 4em;
 }
-/*
-.typeMapper {
-  display: table;
-  border-collapse: separate;
-  border-spacing: 25px;
-  margin: 0 auto;
-}
-*/
+
 .row {
   display: flex;
 }
@@ -56,6 +48,11 @@ body {
   cursor: pointer;
 }
 
+.cardRight:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
 .container {
   text-align: center;
   margin: 20px;
@@ -72,4 +69,26 @@ body {
   font-family: 'Permanent Marker', cursive;
   font-size: 2em;
   font-weight: bolder;
+}
+
+.patternTitle {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 22px;
+  font-weight: bolder;
+}
+
+.description {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+}
+
+.toggleButton {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 22px;
+  font-weight: bolder;
+  border: none;
+}
+
+.toggleButton:focus {
+  outline: none
 }

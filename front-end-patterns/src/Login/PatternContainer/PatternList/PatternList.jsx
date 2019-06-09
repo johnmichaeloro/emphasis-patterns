@@ -2,7 +2,24 @@ import React from 'react';
 import sentenceArrayMaker from '../js/sentences';
 
 //To filter this according to category, I would need to pass the associated ids as props. I would need to turn patternMapper into a forEach. Then I would need to do another for each between patternMapper and textMapper. This foreach would go through the associated ids. There would be an if check that would say, if the ids match, return this pattern. Then the pattern would enter the textmapper and be represented on the page.
-
+/**
+return(
+  <div className='card'>
+    <div key={pattern._id} className='container'>
+      <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
+      <span>{sentenceColorer}</span><br/>
+      <span>Publication:{pattern.publication}</span><br/>
+      <span>Year:{pattern.year}</span><br/>
+      <span>URL:{pattern.url}</span><br/>
+      <span>Pattern Type:{pattern.patternType.patternType}</span><br/>
+      <span>Description:{pattern.patternType.description}</span><br/>
+      <span>Commentary:{pattern.commentary}</span><br/>
+      {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+      <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
+    </div>
+  </div>
+)
+**/
 
 
 const PatternList = (props) => {
@@ -41,20 +58,16 @@ const PatternList = (props) => {
     })
     if (pattern && pattern.patternType) {
       return(
-
-        <li key={pattern._id}>
-          <span>Title:{pattern.title}</span><br/>
-          <span>Author:{pattern.author}</span><br/>
-          <span>Publication:{pattern.publication}</span><br/>
-          <span>Year:{pattern.year}</span><br/>
-          <span>URL:{pattern.url}</span><br/>
-          <span>Pattern Type:{pattern.patternType.patternType}</span><br/>
-          <span>Description:{pattern.patternType.description}</span><br/>
-          <span>Text:{sentenceColorer}</span><br/>
-          <span>Commentary:{pattern.commentary}</span><br/>
-          {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-          <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
-        </li>
+        <div className='card'>
+          <div key={pattern._id} className='container'>
+            <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
+            <br/>
+            <span className='description'>{sentenceColorer}</span><br/>
+            <br/>
+            {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+            <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
+          </div>
+        </div>
       )
     } else {
       return(
@@ -78,10 +91,8 @@ const PatternList = (props) => {
   })
   return(
     <div>
-      <h2>View Patterns</h2>
-      <ul>
-        {patternMapper}
-      </ul>
+      <button onClick={props.showCatalog} className='toggleButton'>back to the catalog</button>
+      {patternMapper}
     </div>
   )
 }

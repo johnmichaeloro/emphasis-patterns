@@ -43,6 +43,7 @@ class PatternContainer extends Component {
       },
       modalShowing: false,
       createShowing: false,
+      typeShowing: true,
       listShowing: false,
       typeEditorShowing: false,
       typeCreatorShowing: false,
@@ -65,7 +66,15 @@ class PatternContainer extends Component {
     })
     this.setState({
       patternFilter: filteredPatterns,
-      listShowing: true
+      listShowing: true,
+      typeShowing: false,
+    })
+  }
+
+  showCatalog = (e) => {
+    this.setState({
+      listShowing: false,
+      typeShowing: true
     })
   }
 
@@ -410,9 +419,9 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/>
+        {this.state.typeShowing ? <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/> : null}
 
-        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn}/> : null}
+        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn} showCatalog={this.showCatalog}/> : null}
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
