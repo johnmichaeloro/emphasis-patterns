@@ -6,7 +6,7 @@ const TypeList = (props) => {
   const typeMapper = props.patternTypes.map((patternType) => {
     console.log('typelist', patternType);
     return(
-      <div onClick={props.getPatterns.bind(null, patternType)}>
+      <div onClick={props.filterPatterns.bind(null, patternType)}>
         <li key={patternType._id}>
           <span>Associated Patterns: {patternType.patterns.join(', ')}</span><br/>
           <span>Pattern Type: {patternType.patternType}</span><br/>

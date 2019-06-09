@@ -6,8 +6,8 @@ import sentenceArrayMaker from '../js/sentences';
 
 
 const PatternList = (props) => {
-  console.log('this is props.patterns in PatternList', props.patterns);
-  const patternMapper = props.patterns.map((pattern) => {
+  console.log('this is props.patterns in PatternList', props.patternFilter);
+  const patternMapper = props.patternFilter.map((pattern) => {
     console.log(pattern, 'this is the pattern in the patternMapper');
     const textMapper = sentenceArrayMaker(pattern.text)
     console.log('this is the textMapper', textMapper);

@@ -19,6 +19,7 @@ class PatternContainer extends Component {
     this.state = {
       patternTypes: [],
       patterns: [],
+      patternFilter: [],
       typeToEdit: {
         patternType: '',
         description: ''
@@ -50,6 +51,22 @@ class PatternContainer extends Component {
 
   componentDidMount(){
       this.getPatternTypes();
+      this.getPatterns();
+  }
+
+  filterPatterns = async (patternType) => {
+    let filteredPatterns = [];
+    await this.state.patterns.forEach((pattern) => {
+      console.log('THIS IS THE PATTERN & PATTERN TYPE', pattern, patternType);
+      if(pattern.patternType.patternType === patternType.patternType){
+        console.log('pattern in filterPatterns! *****!!!!!', pattern);
+        filteredPatterns.push(pattern);
+      }
+    })
+    this.setState({
+      patternFilter: filteredPatterns,
+      listShowing: true
+    })
   }
 
   getPatterns = async (patternType) => {
@@ -63,17 +80,8 @@ class PatternContainer extends Component {
       }
       const patternsParsed = await response.json();
       console.log('this is the patternsParsed', patternsParsed.data);
-      let filteredPatterns = [];
-      await patternsParsed.data.forEach((pattern) => {
-        console.log('THIS IS THE PATTERN & PATTERN TYPE FROM PARSED DATA', pattern, patternType);
-        if(pattern.patternType.patternType === patternType.patternType){
-          console.log('pattern in patternsParsed *****!!!!!', pattern);
-          filteredPatterns.push(pattern);
-        }
-      })
       this.setState({
-        patterns: filteredPatterns,
-        listShowing: true
+        patterns: patternsParsed.data,
       })
     } catch(err) {
       console.log(err);
@@ -402,9 +410,9 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} getPatterns={this.getPatterns} loggedIn={this.props.loggedIn}/>
+        <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/>
 
-        {this.state.listShowing ? <PatternList patterns={this.state.patterns} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn}/> : null}
+        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn}/> : null}
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
