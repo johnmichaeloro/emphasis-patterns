@@ -21,7 +21,7 @@ class App extends React.Component {
   }
   render(){
     return(
-      <div>
+      <div className='upperBody'>
         <Login loggedIn={this.state.loggedIn} loginToggle={this.loginToggle} logoutToggle={this.logoutToggle}/>
       </div>
     )

@@ -391,10 +391,10 @@ apiCall = async (array) => {
     console.log('this is this.state.patterns in PatternContainer', this.state.patterns);
     console.log(this.state);
     return(
-      <div>
-        <h1><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></h1>
+      <div className='subBody'>
+        <span className='mainTitle'><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></span>
 
-        <p><i>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a></i>.</p>
+        <p>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
 
         {this.props.loggedIn ? <div>
         <button onClick={this.showCreate}>Create a Pattern</button><br/>

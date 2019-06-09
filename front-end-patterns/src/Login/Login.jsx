@@ -56,7 +56,7 @@ class Login extends React.Component {
   }
   render(){
     return(
-      <div>
+      <div className='midBody'>
         <form onSubmit={this.handleSubmit}>
           Username: <input type='text' name='username' onChange={this.handleChange} />
           Password: <input type='password' name='password' onChange={this.handleChange} />
