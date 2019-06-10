@@ -64,8 +64,8 @@ const PatternList = (props) => {
               <br/>
               <span className='description'>{sentenceColorer}</span><br/>
               <br/>
-              {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-              <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
+                {props.loggedIn ? <div><button className='noClickButton' onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+                <button className='noClickButton' onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
             </div>
           </div>
         </div>

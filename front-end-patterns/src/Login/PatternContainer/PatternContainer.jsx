@@ -59,7 +59,8 @@ class PatternContainer extends Component {
     let filteredPatterns = [];
     await this.state.patterns.forEach((pattern) => {
       console.log('THIS IS THE PATTERN & PATTERN TYPE', pattern, patternType);
-      if(pattern.patternType.patternType === patternType.patternType){
+      if(pattern.patternType._id === patternType._id){
+        //I believe this is what's causing the editing error. I'm comparing names instead of ids. The error occurs when the name has been edited and is therefore different.
         console.log('pattern in filterPatterns! *****!!!!!', pattern);
         filteredPatterns.push(pattern);
       }
@@ -201,7 +202,11 @@ apiCall = async (array) => {
         credentials: 'include'
       });
       const deleteTypeJson = await deleteType.json();
-      this.setState({patternTypes: this.state.patternTypes.filter((patternType, i) => patternType._id !== id)});
+      this.setState({
+        patternTypes: this.state.patternTypes.filter((patternType, i) => patternType._id !== id),
+        listShowing: false,
+        typeShowing: true
+      });
     } catch(err){
       console.log(err, 'this was the delete error');
     }
@@ -239,6 +244,8 @@ apiCall = async (array) => {
     }
   }
 
+//When I update a type, the associated patterns only appear on reload. Perhaps I can use filterPatterns to address this. How? By placing this.filterPatterns(patternType) above the return statement in editedPatternTypeArray? No, this won't solve the problem.
+
   editPatternType = async (e) => {
     e.preventDefault();
     try{
@@ -261,7 +268,7 @@ apiCall = async (array) => {
       this.setState({
         patternTypes: editedPatternTypeArray,
         typeEditorShowing: false,
-        listShowing: true
+        typeShowing: true
       });
     } catch(err){
       console.log(err);
