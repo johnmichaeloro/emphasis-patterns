@@ -7,6 +7,7 @@ router.get('/', async (req, res, next) => {
   console.log('this is get all pattern types');
   try{
     const allTypes = await PatternType.find();
+    console.log('THIS IS ALL TYPES', allTypes);
     res.json({
       status: 200,
       data: allTypes
@@ -46,6 +47,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   console.log('inside pattern type delete route');
   try{
+    const deletedPatterns = await Pattern.deleteMany({'patternType': req.params.id});
     const deletedType = await PatternType.findByIdAndRemove(req.params.id);
     res.json({
       status: 200,
