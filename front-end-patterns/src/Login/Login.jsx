@@ -16,6 +16,11 @@ class Login extends React.Component {
       [e.target.name]: e.target.value
     })
   };
+
+  clearForm = () => {
+    document.getElementById('loginForm').reset();
+  }
+
   handleSubmit = async (e) => {
     e.preventDefault();
     console.log('submitting login form');
@@ -32,7 +37,8 @@ class Login extends React.Component {
       if(parsedResponse.data === 'login successful'){
         this.props.loginToggle();
         console.log('login successful');
-      }
+      };
+      this.clearForm();
     } catch(err){
         console.log(err);
     }
@@ -56,8 +62,8 @@ class Login extends React.Component {
   }
   render(){
     return(
-      <div className='midBody'>
-        <form onSubmit={this.handleSubmit}>
+      <div>
+        <form id='loginForm' onSubmit={this.handleSubmit}>
           Username: <input type='text' name='username' onChange={this.handleChange} />
           Password: <input type='password' name='password' onChange={this.handleChange} />
           <input type='submit' />

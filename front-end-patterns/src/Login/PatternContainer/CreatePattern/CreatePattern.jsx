@@ -76,7 +76,7 @@ class CreatePattern extends Component {
           </label>
           <br/>
           <label>
-            Text: <input type="text" name='text' onChange={this.updatePattern} />
+            Text: <textarea name='text' onChange={this.updatePattern} />
           </label>
           <br/>
           <label>

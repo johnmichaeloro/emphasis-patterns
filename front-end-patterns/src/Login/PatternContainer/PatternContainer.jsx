@@ -183,7 +183,7 @@ apiCall = async (array) => {
       this.setState({
         patterns: [...this.state.patterns, parsedResponse.data],
         createShowing: false,
-        listShowing: true,
+        typeShowing: true,
       });
       console.log(this.state.patterns);
       this.getPatternTypes();
@@ -218,11 +218,13 @@ apiCall = async (array) => {
       const deletePatternJson = await deletePattern.json();
       let parentIndexToDel = -1;
       let childIndexToDel = -1;
+      let patternTypeFilter;
       this.state.patternTypes.forEach((patternType, index) => {
         patternType.patterns.forEach((pattern, childIndex) => {
           if (pattern == deletePatternJson.data._id) {
             parentIndexToDel = index;
-            childIndexToDel = childIndex
+            childIndexToDel = childIndex;
+            patternTypeFilter = patternType;
           }
         });
       })
@@ -231,6 +233,7 @@ apiCall = async (array) => {
       this.setState({
         patterns: this.state.patterns.filter((pattern, i) => pattern._id !== id)
       });
+      this.filterPatterns(patternTypeFilter);
     } catch(err) {
       console.log(err, 'this was the delete error');
     }
@@ -305,7 +308,11 @@ apiCall = async (array) => {
         this.setState({
           patterns: editedPatternArray,
           modalShowing: false,
-          listShowing: true,
+        });
+        await this.state.patternTypes.forEach((patternType) => {
+          if(patternType._id === this.state.patternToEdit.patternType._id){
+            this.filterPatterns(patternType);
+          }
         });
       } catch(err) {
         console.log(err);
@@ -331,7 +338,11 @@ apiCall = async (array) => {
         this.setState({
           patterns: editedPatternArray,
           modalShowing: false,
-          listShowing: true,
+        });
+        await this.state.patternTypes.forEach((patternType) => {
+          if(patternType._id === this.state.patternToEdit.patternType._id){
+            this.filterPatterns(patternType);
+          }
         });
       } catch(err) {
         console.log(err);

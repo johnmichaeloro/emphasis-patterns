@@ -56,38 +56,20 @@ const PatternList = (props) => {
       }
 
     })
-    if (pattern && pattern.patternType) {
       return(
-        <div className='card'>
-          <div key={pattern._id} className='container'>
-            <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
-            <br/>
-            <span className='description'>{sentenceColorer}</span><br/>
-            <br/>
-            {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-            <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
+        <div className='row'>
+          <div className='patternCard'>
+            <div key={pattern._id} className='container'>
+              <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
+              <br/>
+              <span className='description'>{sentenceColorer}</span><br/>
+              <br/>
+              {props.loggedIn ? <div><button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
+              <button onClick={props.showModal.bind(null, pattern)}>Edit</button></div> : null}
+            </div>
           </div>
         </div>
       )
-    } else {
-      return(
-
-        <li key={pattern._id}>
-          <span>Title:{pattern.title}</span><br/>
-          <span>Author:{pattern.author}</span><br/>
-          <span>Publication:{pattern.publication}</span><br/>
-          <span>Year:{pattern.year}</span><br/>
-          <span>URL:{pattern.url}</span><br/>
-          <span>Pattern Type: none</span><br/>
-          <span>Description: none</span><br/>
-          <span>Text:{sentenceColorer}</span><br/>
-          <span>Commentary:{pattern.commentary}</span><br/>
-          <button onClick={props.deletePattern.bind(null, pattern._id)}>Delete</button>
-          <button onClick={props.showModal.bind(null, pattern)}>Edit</button>
-        </li>
-      )
-    }
-
   })
   return(
     <div>
