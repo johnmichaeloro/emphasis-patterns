@@ -6,6 +6,7 @@ import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
 import TypeEditor from './TypeEditor/TypeEditor';
+import { Route, Switch } from 'react-router-dom';
 
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
@@ -60,7 +61,6 @@ class PatternContainer extends Component {
     await this.state.patterns.forEach((pattern) => {
       console.log('THIS IS THE PATTERN & PATTERN TYPE', pattern, patternType);
       if(pattern.patternType._id === patternType._id){
-        //I believe this is what's causing the editing error. I'm comparing names instead of ids. The error occurs when the name has been edited and is therefore different.
         console.log('pattern in filterPatterns! *****!!!!!', pattern);
         filteredPatterns.push(pattern);
       }
@@ -413,15 +413,9 @@ apiCall = async (array) => {
     })
   }
 
-  render(){
-    console.log('this is state.patternTypes', this.state.patternTypes);
-    console.log('this is this.state.patterns in PatternContainer', this.state.patterns);
-    console.log(this.state);
+  typePage = () => {
     return(
-      <div className='subBody'>
-        <span className='mainTitle'><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></span>
-
-        <p>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
+      <div>
 
         {this.props.loggedIn ? <div>
         <button onClick={this.showCreate}>Create a Pattern</button><br/>
@@ -439,11 +433,24 @@ apiCall = async (array) => {
 
         {this.state.typeShowing ? <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/> : null}
 
-        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn} showCatalog={this.showCatalog}/> : null}
-
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
       </div>
+    )
+  }
+  patternPage = () => {
+    return(
+      <div>
+        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn} showCatalog={this.showCatalog}/> : null}
+      </div>
+    )
+  }
+  render(){
+    return(
+      <Switch>
+        <Route exact path='/' component={this.typePage} />
+        <Route path='/patterns/' component={this.patternPage}/>
+      </Switch>
     )
   }
 }

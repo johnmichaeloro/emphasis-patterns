@@ -1,6 +1,7 @@
 import React from 'react';
 import Registration from './Registration/Registration';
 import PatternContainer from './PatternContainer/PatternContainer';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props){
@@ -70,6 +71,9 @@ class Login extends React.Component {
         </form>
         <br/>
         {this.props.loggedIn ? <div><button onClick={this.handleLogout}>Logout</button><Registration /></div> : null}
+        <Link to="/" style={{textDecoration: 'none', color: 'black'}}><span className='mainTitle'><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></span></Link>
+
+        <p>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
         <PatternContainer loggedIn={this.props.loggedIn}/>
       </div>
     )
