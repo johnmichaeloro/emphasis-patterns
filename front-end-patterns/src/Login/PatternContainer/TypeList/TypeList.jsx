@@ -1,59 +1,68 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
-const TypeList = (props) => {
-  const typeMapper = props.patternTypes.map((patternType, index) => {
-    console.log('typelist', patternType, index);
-    if(index % 2 !== 0){
-      return(
-        <div className='row'>
-          <div className='card'>
-            <Link to="/patterns/" style={{textDecoration: 'none', color: 'black'}}>
-            <div className='container' onClick={props.filterPatterns.bind(null, props.patternTypes[index - 1])}>
-              <span className='title'>{props.patternTypes[index - 1].patternType}</span><br/>
-              <br/>
-              <span className='description'>{props.patternTypes[index - 1].description}</span><br/>
-            </div>
-            </Link>
-            {props.loggedIn ? <div><button className='noClickButton' onClick={props.showTypeEditor.bind(null, props.patternTypes[index - 1])}>Edit</button>
-            <button className='noClickButton' onClick={props.deletePatternType.bind(null, props.patternTypes[index - 1]._id)}>Delete</button></div> : null}
-          </div>
-          <div className='cardRight'>
-            <Link to="/patterns/" style={{textDecoration: 'none', color: 'black'}}>
-            <div className='container' onClick={props.filterPatterns.bind(null, patternType)}>
-              <span className='title'>{patternType.patternType}</span><br/>
-              <br/>
-              <span className='description'>{patternType.description}</span><br/>
-            </div>
-            </Link>
-            {props.loggedIn ? <div><button className='noClickButton' onClick={props.showTypeEditor.bind(null, patternType)}>Edit</button>
-            <button className='noClickButton' onClick={props.deletePatternType.bind(null, patternType._id)}>Delete</button></div> : null}
-          </div>
-        </div>
-      )
-    } else if(index === props.patternTypes.length - 1){
-      return(
-        <div className='column'>
-          <div className='card'>
-            <Link to="/patterns/" style={{textDecoration: 'none', color: 'black'}}>
-            <div className='container' onClick={props.filterPatterns.bind(null, patternType)}>
-              <span className='title'>{patternType.patternType}</span><br/>
-              <br/>
-              <span className='description'>{patternType.description}</span><br/>
-            </div>
-            </Link>
-            {props.loggedIn ? <div><button className='noClickButton' onClick={props.showTypeEditor.bind(null, patternType)}>Edit</button>
-            <button className='noClickButton' onClick={props.deletePatternType.bind(null, patternType._id)}>Delete</button></div> : null}
-          </div>
-        </div>
-      )
+class TypeList extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedPatternType: []
     }
-  })
-  return(
-      <div className='typeMapper'>
-        {typeMapper}
-      </div>
-  )
-}
+  }
+
+  render(){
+    const typeMapper = this.props.patternTypes.map((patternType, index) => {
+      console.log('typelist', patternType, index);
+      if(index % 2 !== 0){
+        return(
+          <div className='row'>
+            <div className='card'>
+              <Link to={`/${this.props.patternTypes[index - 1].patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
+              <div className='container' onClick={this.props.filterPatterns.bind(null, this.props.patternTypes[index - 1])}>
+                <span className='title'>{this.props.patternTypes[index - 1].patternType}</span><br/>
+                <br/>
+                <span className='description'>{this.props.patternTypes[index - 1].description}</span><br/>
+              </div>
+              </Link>
+              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, this.props.patternTypes[index - 1])}>Edit</button>
+              <button className='noClickButton' onClick={this.props.deletePatternType.bind(null, this.props.patternTypes[index - 1]._id)}>Delete</button></div> : null}
+            </div>
+            <div className='cardRight'>
+              <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
+              <div className='container' onClick={this.props.filterPatterns.bind(null, patternType)}>
+                <span className='title'>{patternType.patternType}</span><br/>
+                <br/>
+                <span className='description'>{patternType.description}</span><br/>
+              </div>
+              </Link>
+              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, patternType)}>Edit</button>
+              <button className='noClickButton' onClick={this.props.deletePatternType.bind(null, patternType._id)}>Delete</button></div> : null}
+            </div>
+          </div>
+        )
+      } else if(index === this.props.patternTypes.length - 1){
+        return(
+          <div className='column'>
+            <div className='card'>
+              <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
+              <div className='container' onClick={this.props.filterPatterns.bind(null, patternType)}>
+                <span className='title'>{patternType.patternType}</span><br/>
+                <br/>
+                <span className='description'>{patternType.description}</span><br/>
+              </div>
+              </Link>
+              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, patternType)}>Edit</button>
+              <button className='noClickButton' onClick={this.props.deletePatternType.bind(null, patternType._id)}>Delete</button></div> : null}
+            </div>
+          </div>
+        )
+      }
+    })
+    return(
+        <div className='typeMapper'>
+          {typeMapper}
+        </div>
+    )
+  }
+  }
 
 export default TypeList;

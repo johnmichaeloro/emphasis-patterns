@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+
 import CreatePattern from './CreatePattern/CreatePattern';
-import PatternList from './PatternList/PatternList';
 import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
@@ -11,8 +11,15 @@ import { Route, Switch } from 'react-router-dom';
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
 import compileData from './js/compileData';
+import sentenceArrayMaker from './js/sentences';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+//THIS IS WHEN I STARTED TO ADD PATTERNLIST AS A FUNCTION OF PATTERNCONTAINER.
+//1. First I deleted the PatternList import.
+//2. Then I added SentenceArrayMaker to the imports.
+//3. Then I added the PatternList's componentry to patternPage, replacing its componentry.
+
 
 class PatternContainer extends Component {
   constructor(props){
@@ -44,8 +51,6 @@ class PatternContainer extends Component {
       },
       modalShowing: false,
       createShowing: false,
-      typeShowing: true,
-      listShowing: false,
       typeEditorShowing: false,
       typeCreatorShowing: false,
     }
@@ -56,26 +61,28 @@ class PatternContainer extends Component {
       this.getPatterns();
   }
 
-  filterPatterns = async (patternType) => {
+//What about having filterPatterns occur on component did mount? It would iterate through the patternTypes.
+
+//What about this.filterPatterns as the route function with filterPatterns retturning PatternList?
+
+//The problem I'm facing right now is that filterPatterns is not firing when a link is pasted in the URL bar. In order for it to fire, my thinking is that it needs to be the component activated by the Route. But how would this work in practice? First, why does filterPatterns need to be the component that fires?
+
+//I would need to move filterPatterns and patternPage into TypeList. All of the state properties they use will need to be passed to them as props. I will need to pass them through TypeList. I will need to inport PatternList in TypeList. FilterPatterns will become a function that runs within the class of TypeList, as well as PatternPage.
+
+//In PatternList, I might need to have filterPatterns firing. It's either there or in TypeList.
+
+//Based on front-end console logs, the issue is that PatternList is rendering with an empty filterPatterns array. I might need to move filter patterns to PatternList and have it fire as a component did mount. How would I do this? It should be in TypeList.
+
+filterPatterns = async (patternType) => {
+    console.log('PATTERN FILTER ACTIVATED');
     let filteredPatterns = [];
     await this.state.patterns.forEach((pattern) => {
-      console.log('THIS IS THE PATTERN & PATTERN TYPE', pattern, patternType);
       if(pattern.patternType._id === patternType._id){
-        console.log('pattern in filterPatterns! *****!!!!!', pattern);
         filteredPatterns.push(pattern);
       }
     })
     this.setState({
       patternFilter: filteredPatterns,
-      listShowing: true,
-      typeShowing: false,
-    })
-  }
-
-  showCatalog = (e) => {
-    this.setState({
-      listShowing: false,
-      typeShowing: true
     })
   }
 
@@ -184,7 +191,6 @@ apiCall = async (array) => {
       this.setState({
         patterns: [...this.state.patterns, parsedResponse.data],
         createShowing: false,
-        typeShowing: true,
       });
       console.log(this.state.patterns);
       this.getPatternTypes();
@@ -204,8 +210,6 @@ apiCall = async (array) => {
       const deleteTypeJson = await deleteType.json();
       this.setState({
         patternTypes: this.state.patternTypes.filter((patternType, i) => patternType._id !== id),
-        listShowing: false,
-        typeShowing: true
       });
     } catch(err){
       console.log(err, 'this was the delete error');
@@ -268,7 +272,6 @@ apiCall = async (array) => {
       this.setState({
         patternTypes: editedPatternTypeArray,
         typeEditorShowing: false,
-        typeShowing: true
       });
     } catch(err){
       console.log(err);
@@ -383,7 +386,6 @@ apiCall = async (array) => {
     console.log('this is showTypeEditor', patternType);
     this.setState({
       typeEditorShowing: true,
-      listShowing: false,
       typeToEdit: patternType
     })
   }
@@ -392,7 +394,6 @@ apiCall = async (array) => {
     console.log("this is show modal");
     this.setState({
       createShowing: false,
-      listShowing: false,
       modalShowing: true,
       patternToEdit: pattern
     }, () => console.log(this.state.modalShowing));
@@ -409,13 +410,13 @@ apiCall = async (array) => {
     console.log('this is show create');
     this.setState({
       createShowing: true,
-      listShowing: false,
     })
   }
 
   typePage = () => {
     return(
       <div>
+        <p>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
 
         {this.props.loggedIn ? <div>
         <button onClick={this.showCreate}>Create a Pattern</button><br/>
@@ -431,25 +432,100 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        {this.state.typeShowing ? <TypeList patternTypes={this.state.patternTypes} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/> : null}
+        <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/>
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
       </div>
     )
   }
-  patternPage = () => {
+
+  patternPage = ({ match }) => {
+    let filteredPatterns = [];
+    let typeDescription;
+    console.log('THIS IS MATCH!!!!', match);
+    console.log('This is match.params.id', match.params.id);
+    console.log('This is patternFilter.length', this.state.patternFilter.length);
+    console.log('this is patternFilter in patternPage', this.state.patternFilter);
+    if(this.state.patternFilter.length === 0){
+     console.log('length is zero!!!!!!!!');
+     console.log('PATTERN TYPES in state', this.state.patternTypes);
+     const matchedType = this.state.patternTypes.find(patternType => patternType.patternType === match.params.id);
+     console.log('found the matched type', matchedType);
+     this.state.patterns.forEach((pattern) => {
+       if(pattern.patternType._id === matchedType._id){
+         filteredPatterns.push(pattern);
+         typeDescription = pattern.patternType.description
+       }
+     })
+     console.log(filteredPatterns);
+   } else{
+     filteredPatterns = this.state.patternFilter
+   };
+    const patternMapper = filteredPatterns.map((pattern) => {
+      console.log(pattern, 'this is the pattern in the patternMapper');
+      const textMapper = sentenceArrayMaker(pattern.text)
+      console.log('this is the textMapper', textMapper);
+      const sentenceColorer = textMapper.map((map) => {
+        if(map.color === 'yellow') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
+          )
+        } else if(map.color === 'green') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
+          )
+        } else if(map.color === 'lightBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
+          )
+        } else if(map.color === 'darkBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
+          )
+        } else if(map.color === 'lightGreen') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
+          )
+        } else if(map.color === 'fadedBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
+          )
+        }
+
+      })
+        return(
+          <div className='row'>
+            <div className='patternCard'>
+              <div key={pattern._id} className='container'>
+                <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
+                <br/>
+                <span className='description'>{sentenceColorer}</span><br/>
+                <br/>
+                  {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
+                  <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
+              </div>
+            </div>
+          </div>
+        )
+    })
+
     return(
       <div>
-        {this.state.listShowing ? <PatternList patternFilter={this.state.patternFilter} showModal={this.showModal} deletePattern={this.deletePattern} loggedIn={this.props.loggedIn} showCatalog={this.showCatalog}/> : null}
+        <h1>{match.params.id}</h1>
+        <p>{typeDescription}</p>
+        <div>
+          {patternMapper}
+        </div>
       </div>
     )
   }
+
   render(){
     return(
       <Switch>
         <Route exact path='/' component={this.typePage} />
-        <Route path='/patterns/' component={this.patternPage}/>
+        <Route exact path='/:id' component={this.patternPage}/>
       </Switch>
     )
   }
