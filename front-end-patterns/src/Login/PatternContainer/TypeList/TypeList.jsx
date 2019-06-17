@@ -9,6 +9,9 @@ class TypeList extends React.Component {
     }
   }
 
+//onClick={this.props.filterPatterns.bind(null, this.props.patternTypes[index - 1])}
+//onClick={this.props.filterPatterns.bind(null, patternType)}
+
   render(){
     const typeMapper = this.props.patternTypes.map((patternType, index) => {
       console.log('typelist', patternType, index);
@@ -17,7 +20,7 @@ class TypeList extends React.Component {
           <div className='row'>
             <div className='card'>
               <Link to={`/${this.props.patternTypes[index - 1].patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
-              <div className='container' onClick={this.props.filterPatterns.bind(null, this.props.patternTypes[index - 1])}>
+              <div className='container' >
                 <span className='title'>{this.props.patternTypes[index - 1].patternType}</span><br/>
                 <br/>
                 <span className='description'>{this.props.patternTypes[index - 1].description}</span><br/>
@@ -28,7 +31,7 @@ class TypeList extends React.Component {
             </div>
             <div className='cardRight'>
               <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
-              <div className='container' onClick={this.props.filterPatterns.bind(null, patternType)}>
+              <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
                 <br/>
                 <span className='description'>{patternType.description}</span><br/>
@@ -44,7 +47,7 @@ class TypeList extends React.Component {
           <div className='column'>
             <div className='card'>
               <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
-              <div className='container' onClick={this.props.filterPatterns.bind(null, patternType)}>
+              <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
                 <br/>
                 <span className='description'>{patternType.description}</span><br/>

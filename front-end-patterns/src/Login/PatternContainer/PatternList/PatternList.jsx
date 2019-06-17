@@ -29,38 +29,9 @@ class PatternList extends React.Component {
     }
   }
 
-  //The problem is that typeList appears on an exact path, so its functions on componentDidMount do not fire on an extended path. I need to use toggles so the appropriate paths are firing in the background.
-
-  mountChecker = async () => {
-    if(this.props.patternTypes.length === 0){
-      console.log('patternTypes at zero');
-      await this.props.getPatternTypes();
-      console.log('patternTypes full', this.props.patternTypes);
-      await this.props.getPatterns();
-      console.log('patterns full', this.props.patterns);
-    }
-  }
-
-//I could overcome the issue by having filterPatterns functioning here. What would that look like? I would start by building a substitute, not a replacement, which would only activate when patterfilter was empty. What would that look like?
-
-//If patternFilter is empty, getPatterns, getPatternTypes, and then run the filter function here. If not, return this.props.patternFilter. Either return would be stored as a variable.
-
-//Or I could just move the bulk of patternList into patternContainer. I would still need to implement filterChecker, but it would probably be easier.
-
-  filterChecker = async () => {
-     if(this.props.patternFilter.length === 0){
-      console.log('length is zero!!!!!!!!');
-      console.log('PATTERN TYPES in props', this.props.patternTypes);
-      await this.props.patternTypes.forEach((patternType) => {
-        console.log('SEARCHING FOR PATTERNTYPES');
-        if(patternType.patternType === this.props.matchParamsId){
-          console.log('FOUND THE PATTERNTYPE', patternType);
-          this.props.filterPatterns.bind(null, patternType)
-        }
-      })
-    } else{
-      return 'No need for filter checker in PatternList.'
-    }
+  componentDidMount(){
+    //In here, I would want an if check that would call getPatterns and getPatternTypes.
+    //It would also run filteer patterns outside of the if check, I believe.
   }
 
   render(){

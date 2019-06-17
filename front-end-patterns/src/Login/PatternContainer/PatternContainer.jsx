@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Suspense} from 'react';
 import axios from 'axios';
 
 import CreatePattern from './CreatePattern/CreatePattern';
@@ -6,7 +6,8 @@ import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
 import TypeEditor from './TypeEditor/TypeEditor';
-import { Route, Switch } from 'react-router-dom';
+
+import { Route, Switch, Link } from 'react-router-dom';
 
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
@@ -15,12 +16,6 @@ import sentenceArrayMaker from './js/sentences';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-//THIS IS WHEN I STARTED TO ADD PATTERNLIST AS A FUNCTION OF PATTERNCONTAINER.
-//1. First I deleted the PatternList import.
-//2. Then I added SentenceArrayMaker to the imports.
-//3. Then I added the PatternList's componentry to patternPage, replacing its componentry.
-
-
 class PatternContainer extends Component {
   constructor(props){
     super(props);
@@ -28,6 +23,7 @@ class PatternContainer extends Component {
       patternTypes: [],
       patterns: [],
       patternFilter: [],
+      entryPattern: null,
       typeToEdit: {
         patternType: '',
         description: ''
@@ -60,18 +56,6 @@ class PatternContainer extends Component {
       this.getPatternTypes();
       this.getPatterns();
   }
-
-//What about having filterPatterns occur on component did mount? It would iterate through the patternTypes.
-
-//What about this.filterPatterns as the route function with filterPatterns retturning PatternList?
-
-//The problem I'm facing right now is that filterPatterns is not firing when a link is pasted in the URL bar. In order for it to fire, my thinking is that it needs to be the component activated by the Route. But how would this work in practice? First, why does filterPatterns need to be the component that fires?
-
-//I would need to move filterPatterns and patternPage into TypeList. All of the state properties they use will need to be passed to them as props. I will need to pass them through TypeList. I will need to inport PatternList in TypeList. FilterPatterns will become a function that runs within the class of TypeList, as well as PatternPage.
-
-//In PatternList, I might need to have filterPatterns firing. It's either there or in TypeList.
-
-//Based on front-end console logs, the issue is that PatternList is rendering with an empty filterPatterns array. I might need to move filter patterns to PatternList and have it fire as a component did mount. How would I do this? It should be in TypeList.
 
 filterPatterns = async (patternType) => {
     console.log('PATTERN FILTER ACTIVATED');
@@ -247,8 +231,6 @@ apiCall = async (array) => {
       console.log(err, 'this was the delete error');
     }
   }
-
-//When I update a type, the associated patterns only appear on reload. Perhaps I can use filterPatterns to address this. How? By placing this.filterPatterns(patternType) above the return statement in editedPatternTypeArray? No, this won't solve the problem.
 
   editPatternType = async (e) => {
     e.preventDefault();
@@ -432,10 +414,125 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} filterPatterns={this.filterPatterns} loggedIn={this.props.loggedIn}/>
+        <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/>
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
+      </div>
+    )
+  }
+
+  setEntryPattern = (pattern) => {
+    this.setState({
+      entryPattern: pattern
+    })
+  }
+
+/**
+  entryPage = ({ match }) => {
+    let matchedPattern;
+    console.log('this is entry pattern in state', this.state.entryPattern);
+    if(this.state.entryPattern === null){
+      this.state.patterns.forEach((pattern) => {
+        if(pattern.title === match.params.id){
+          matchedPattern = pattern
+        }
+      })
+    } else {
+      matchedPattern = this.state.entryPattern
+    }
+    return(
+      <div>
+        <h1>{match.params.id}</h1>
+      </div>
+    )
+  }
+**/
+
+  entryPage = ({ match }) => {
+    let foundPattern = [];
+    let patternTypeTitle;
+    let patternTypeDescription;
+    console.log('THIS IS MATCH!!!!', match);
+    console.log('This is match.params.id', match.params.id);
+    console.log('This is patternFilter.length', this.state.patternFilter.length);
+    console.log('this is patternFilter in patternPage', this.state.patternFilter);
+    if(this.state.patternFilter.length === 0){
+     console.log('length is zero!!!!!!!!');
+     console.log('PATTERN TYPES in state', this.state.patternTypes);
+     const matchedPattern = this.state.patterns.find(pattern => pattern.title === match.params.id);
+     console.log('found the matched type', matchedPattern);
+     this.state.patterns.forEach((pattern) => {
+       if(pattern._id === matchedPattern._id){
+         foundPattern.push(pattern);
+         patternTypeTitle = pattern.patternType.patternType;
+         patternTypeDescription = pattern.patternType.description
+       }
+     })
+     console.log('This is the foundPattern array', foundPattern);
+   } else{
+     foundPattern = this.state.patternFilter
+   };
+    const entryMapper = foundPattern.map((pattern) => {
+      console.log(pattern, 'this is the pattern in the entryMapper');
+      const textMapper = sentenceArrayMaker(pattern.text)
+      console.log('this is the textMapper', textMapper);
+      const sentenceColorer = textMapper.map((map) => {
+        if(map.color === 'yellow') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
+          )
+        } else if(map.color === 'green') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
+          )
+        } else if(map.color === 'lightBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
+          )
+        } else if(map.color === 'darkBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
+          )
+        } else if(map.color === 'lightGreen') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
+          )
+        } else if(map.color === 'fadedBlue') {
+          return(
+            <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
+          )
+        }
+      })
+
+        return(
+          <div className='row'>
+            <div className='patternCard'>
+              <div key={pattern._id} className='container'>
+                <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
+                <br/>
+                <span className='description'>{sentenceColorer}</span><br/>
+                <br/>
+                <span>Published by {pattern.publication} in {pattern.year}.</span>
+                <br/>
+                <span>{pattern.commentary}</span>
+                <br/>
+                {pattern.url ? <span>Read the original text <a href={pattern.url}>here</a>.</span> : null}
+              </div>
+              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
+              <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
+            </div>
+          </div>
+        )
+    })
+
+    return(
+      <div>
+        <h1>{patternTypeTitle}</h1>
+        <p>{patternTypeDescription}</p>
+        <div>
+          {entryMapper}
+        </div>
       </div>
     )
   }
@@ -492,19 +589,21 @@ apiCall = async (array) => {
             <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
           )
         }
-
       })
+
         return(
           <div className='row'>
             <div className='patternCard'>
-              <div key={pattern._id} className='container'>
+              <Link to={`/${match.params.id}/${pattern.title}`} style={{textDecoration: 'none', color: 'black'}}>
+              <div key={pattern._id} className='container' onClick={this.setEntryPattern.bind(null, pattern)}>
                 <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
                 <br/>
                 <span className='description'>{sentenceColorer}</span><br/>
                 <br/>
-                  {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
-                  <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
               </div>
+              </Link>
+              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
+              <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
             </div>
           </div>
         )
@@ -526,6 +625,7 @@ apiCall = async (array) => {
       <Switch>
         <Route exact path='/' component={this.typePage} />
         <Route exact path='/:id' component={this.patternPage}/>
+        <Route exact path='/:id/:id' component={this.entryPage}/>
       </Switch>
     )
   }
