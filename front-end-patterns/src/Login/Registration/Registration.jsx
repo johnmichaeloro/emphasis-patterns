@@ -31,6 +31,7 @@ class Registration extends React.Component {
       if(parsedResponse.data === 'registration successful'){
         console.log('registration successful');
       }
+      this.props.hideRegistration();
     } catch(err){
       console.log(err);
     }

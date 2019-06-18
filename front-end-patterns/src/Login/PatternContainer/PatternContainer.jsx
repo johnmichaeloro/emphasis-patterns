@@ -6,6 +6,7 @@ import PatternEditor from './PatternEditor/PatternEditor';
 import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
 import TypeEditor from './TypeEditor/TypeEditor';
+import Registration from '../Registration/Registration';
 
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 
@@ -56,6 +57,7 @@ class PatternContainer extends Component {
       createShowing: false,
       typeEditorShowing: false,
       typeCreatorShowing: false,
+      registrationShowing: false,
     }
   }
 
@@ -408,18 +410,34 @@ apiCall = async (array) => {
     })
   }
 
+  showRegistration = () => {
+    this.setState({
+      registrationShowing: true
+    })
+  }
+
+  hideRegistration = () => {
+    this.setState({
+      registrationShowing: false
+    })
+  }
+
   typePage = () => {
     return(
       <div>
         <p className='description'>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
 
         {this.props.loggedIn ? <div>
-        <button onClick={this.showCreate}>Create a Pattern</button><br/>
 
-        <br/>
+          <button className='menuLinks' onClick={this.showRegistration}>Register a User</button>
 
-        <button onClick={this.showTypeCreator}>Create a Type</button>
+          <button className='menuLinks' onClick={this.showTypeCreator}>Create a Type</button>
+
+          <button className='menuLinks' onClick={this.showCreate}>Create a Pattern</button>
+
         </div> : null}
+
+        {this.state.registrationShowing ? <Registration hideRegistration={this.hideRegistration} /> : null}
 
         {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} /> : null}
 
@@ -514,8 +532,10 @@ apiCall = async (array) => {
                 <br/>
                 {pattern.url ? <span className='description'>Read the original text <a href={pattern.url}>here</a>.</span> : null}
               </div>
-              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
-              <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
+              {this.props.loggedIn ? <div>
+                <button className='menuLinks' onClick={this.showModal.bind(null, pattern)}>Edit</button>
+                <button className='menuLinks' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
+              </div> : null}
             </div>
           </div>
         </div>
@@ -602,8 +622,10 @@ apiCall = async (array) => {
                 <br/>
               </div>
               </Link>
-              {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
-              <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
+              {this.props.loggedIn ? <div>
+                <button className='menuLinks' onClick={this.showModal.bind(null, pattern)}>Edit</button>
+                <button className='menuLinks' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
+              </div> : null}
             </div>
           </div>
         </div>

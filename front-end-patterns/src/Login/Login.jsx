@@ -1,5 +1,4 @@
 import React from 'react';
-import Registration from './Registration/Registration';
 import PatternContainer from './PatternContainer/PatternContainer';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +8,8 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      showLogin: false,
+      showMenu: true
     }
   };
   handleChange = (e) => {
@@ -40,6 +41,9 @@ class Login extends React.Component {
         console.log('login successful');
       };
       this.clearForm();
+      this.setState({
+        showLogin: false
+      })
     } catch(err){
         console.log(err);
     }
@@ -57,23 +61,47 @@ class Login extends React.Component {
         this.props.logoutToggle();
         console.log('logout successful');
       }
+      this.setState({
+        showMenu: true
+      })
     } catch(err){
       console.log(err);
     }
   }
+  renderLoginForm = (e) => {
+    e.preventDefault();
+    this.setState({
+      showMenu: false,
+      showLogin: true,
+    })
+  }
+
   render(){
     return(
       <div>
-        <form id='loginForm' onSubmit={this.handleSubmit}>
+
+        <br/><br/>
+
+        <Link to="/" style={{textDecoration: 'none', color: 'black'}}><span className='mainTitle'><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></span></Link>
+
+        <br/>
+
+        <PatternContainer loggedIn={this.props.loggedIn}/>
+
+        <br/>
+
+        {this.props.loggedIn ? <div><a className='menuLinks' href='https://emphasis.ai/'>Emphasis AI</a> <a className='menuLinks' href='http://emphasisdb.herokuapp.com/'>Emphasis DB</a><button className='menuLinks' onClick={this.handleLogout}>Logout</button></div> : null}
+
+        {this.state.showMenu ? <div><a className='menuLinks' href='https://emphasis.ai/'>Emphasis AI</a> <a className='menuLinks' href='http://emphasisdb.herokuapp.com/'>Emphasis DB</a><button className='menuLinks' onClick={this.renderLoginForm}>Login</button></div> : null}
+
+        {this.state.showLogin ? <form id='loginForm' onSubmit={this.handleSubmit}>
           Username: <input type='text' name='username' onChange={this.handleChange} />
           Password: <input type='password' name='password' onChange={this.handleChange} />
           <input type='submit' />
-        </form>
-        <br/>
-        {this.props.loggedIn ? <div><button onClick={this.handleLogout}>Logout</button><Registration /></div> : null}
-        <Link to="/" style={{textDecoration: 'none', color: 'black'}}><span className='mainTitle'><span style={{backgroundColor: '#FFF459'}}>Patterns </span><span style={{backgroundColor: '#4DFC9C'}}>of </span><span style={{backgroundColor: '#59F1FF'}}>Empha</span><span style={{backgroundColor: '#598CF8'}}>sis</span></span></Link>
+        </form> : null}
 
-        <PatternContainer loggedIn={this.props.loggedIn}/>
+        <p>© 2019 Emphasis AI</p>
+
       </div>
     )
   }
