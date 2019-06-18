@@ -7,7 +7,7 @@ import TypeList from './TypeList/TypeList';
 import CreateType from './CreateType/CreateType';
 import TypeEditor from './TypeEditor/TypeEditor';
 
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link, Redirect } from 'react-router-dom';
 
 import stringParser from './js/stringParser';
 import extractData from './js/extractData';
@@ -15,6 +15,13 @@ import compileData from './js/compileData';
 import sentenceArrayMaker from './js/sentences';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+//I could create an extra field in the backend schema for the path. In it, I would store Alternating Patterns as alternating_patterns. What would I need to change to pull this off?
+//First I need to check that my create, update, and delete routes are working.
+//Then I need to account for the changes that will need to be made to the CRUD forms for the new property in the schema.
+//Then I need to add the new property to the mongoose schema, restart the server on a new db, and test the CRUD routes.
+
+//REGARDING THE EDIT AND DELETE ROUTE BUGS, it probably has to do with how the entry is being accessed after the update or deletion. I will probably need to make database calls after updatte and delete to fix this.
 
 class PatternContainer extends Component {
   constructor(props){
@@ -263,11 +270,15 @@ apiCall = async (array) => {
   editPattern = async (e) => {
     e.preventDefault();
     console.log('this is state.patternToEdit', this.state.patternToEdit);
-    console.log("***This is the text to be UPDATED***", this.state.patternToEdit.text.text);
-    //I need to add an if check that says that if the text to be updated is an empty string, we just do the basic fetch request; if not, we do the emphasis call.
-    //But that's not going to help because text will still be empty. But it's working for everything else. Let's try this approach.
-    if(this.state.patternToEdit.text.text !== undefined) {
+    console.log("***This is the text to be UPDATED***", this.state.patternToEdit.text);
+
+    let matchedText = this.state.patterns.find(pattern => pattern._id === this.state.patternToEdit._id);
+
+    console.log(matchedText, 'this is the matchedText', matchedText.text[0].text, this.state.patternToEdit.text[0].text);
+
+    if(this.state.patternToEdit.text[0].text !== matchedText.text[0].text) {
       try{
+        console.log('*******RIGHT PATH******');
         let sectionsArray = stringParser(this.state.patternToEdit.text);
     		sectionsArray = await this.apiCall(sectionsArray);
     		sectionsArray.forEach((section) => {
@@ -276,10 +287,6 @@ apiCall = async (array) => {
     		const entryData = compileData(sectionsArray)
         console.log('this is sectionsArray', sectionsArray);
         this.state.patternToEdit.text = sectionsArray;
-
-
-      //  const text = sentenceArrayMaker(sectionsArray)
-      // ^this line of code is what will allow the colors to be represented on the page
 
         const editResponse = await fetch('http://localhost:9000/api/v1/patterns/' + this.state.patternToEdit._id, {
           method: 'PUT',
@@ -311,6 +318,7 @@ apiCall = async (array) => {
       }
     } else {
       try{
+        console.log('*******WRONG PATH*******');
         const editResponse = await fetch('http://localhost:9000/api/v1/patterns/' + this.state.patternToEdit._id, {
           method: 'PUT',
           credentials: 'include',
@@ -340,7 +348,6 @@ apiCall = async (array) => {
         console.log(err);
       }
     }
-
   }
 
   handleTypeChange = (e) => {
@@ -355,7 +362,6 @@ apiCall = async (array) => {
 
   handleFormChange = (e) => {
     console.log('this is handleFormChange');
-    //can I do an if check here to see if the value is {revealedText}?
     this.setState({
       patternToEdit: {
         ...this.state.patternToEdit,
@@ -398,7 +404,7 @@ apiCall = async (array) => {
   typePage = () => {
     return(
       <div>
-        <p>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
+        <p className='description'>A collection of patterns of sentence-level emphasis with examples and descriptions created using <a href='http://emphasis.ai'>emphasis.ai</a>.</p>
 
         {this.props.loggedIn ? <div>
         <button onClick={this.showCreate}>Create a Pattern</button><br/>
@@ -414,9 +420,9 @@ apiCall = async (array) => {
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
 
-        <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/>
-
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
+
+        {this.state.modalShowing ? null : <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/>}
 
       </div>
     )
@@ -427,27 +433,6 @@ apiCall = async (array) => {
       entryPattern: pattern
     })
   }
-
-/**
-  entryPage = ({ match }) => {
-    let matchedPattern;
-    console.log('this is entry pattern in state', this.state.entryPattern);
-    if(this.state.entryPattern === null){
-      this.state.patterns.forEach((pattern) => {
-        if(pattern.title === match.params.id){
-          matchedPattern = pattern
-        }
-      })
-    } else {
-      matchedPattern = this.state.entryPattern
-    }
-    return(
-      <div>
-        <h1>{match.params.id}</h1>
-      </div>
-    )
-  }
-**/
 
   entryPage = ({ match }) => {
     let foundPattern = [];
@@ -470,6 +455,7 @@ apiCall = async (array) => {
        }
      })
      console.log('This is the foundPattern array', foundPattern);
+     console.log('this is patternTypeTitle and description', patternTypeTitle, patternTypeDescription);
    } else{
      foundPattern = this.state.patternFilter
    };
@@ -506,6 +492,8 @@ apiCall = async (array) => {
       })
 
         return(
+        <div>
+        {this.state.modalShowing? <Redirect to='/' /> : null}
           <div className='row'>
             <div className='patternCard'>
               <div key={pattern._id} className='container'>
@@ -513,23 +501,24 @@ apiCall = async (array) => {
                 <br/>
                 <span className='description'>{sentenceColorer}</span><br/>
                 <br/>
-                <span>Published by {pattern.publication} in {pattern.year}.</span>
+                <span className='description'>Published by {pattern.publication} in {pattern.year}.</span>
                 <br/>
-                <span>{pattern.commentary}</span>
+                <span className='description'>{pattern.commentary}</span>
                 <br/>
-                {pattern.url ? <span>Read the original text <a href={pattern.url}>here</a>.</span> : null}
+                {pattern.url ? <span className='description'>Read the original text <a href={pattern.url}>here</a>.</span> : null}
               </div>
               {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.deletePattern.bind(null, pattern._id)}>Delete</button>
               <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
             </div>
           </div>
+        </div>
         )
     })
 
     return(
       <div>
-        <h1>{patternTypeTitle}</h1>
-        <p>{patternTypeDescription}</p>
+        <Link to={`/${patternTypeTitle}`} style={{textDecoration: 'none', color: 'black'}}><h1 className='title'>{patternTypeTitle}</h1></Link>
+        <p className='description'>{patternTypeDescription}</p>
         <div>
           {entryMapper}
         </div>
@@ -539,6 +528,7 @@ apiCall = async (array) => {
 
   patternPage = ({ match }) => {
     let filteredPatterns = [];
+    let typeTitle;
     let typeDescription;
     console.log('THIS IS MATCH!!!!', match);
     console.log('This is match.params.id', match.params.id);
@@ -552,6 +542,7 @@ apiCall = async (array) => {
      this.state.patterns.forEach((pattern) => {
        if(pattern.patternType._id === matchedType._id){
          filteredPatterns.push(pattern);
+         typeTitle = pattern.patternType.patternType;
          typeDescription = pattern.patternType.description
        }
      })
@@ -592,9 +583,11 @@ apiCall = async (array) => {
       })
 
         return(
+        <div>
+        {this.state.modalShowing? <Redirect to='/' /> : null}
           <div className='row'>
             <div className='patternCard'>
-              <Link to={`/${match.params.id}/${pattern.title}`} style={{textDecoration: 'none', color: 'black'}}>
+              <Link to={`/${typeTitle}/${pattern.title}`} style={{textDecoration: 'none', color: 'black'}}>
               <div key={pattern._id} className='container' onClick={this.setEntryPattern.bind(null, pattern)}>
                 <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
                 <br/>
@@ -606,13 +599,14 @@ apiCall = async (array) => {
               <button className='noClickButton' onClick={this.showModal.bind(null, pattern)}>Edit</button></div> : null}
             </div>
           </div>
+        </div>
         )
     })
 
     return(
       <div>
-        <h1>{match.params.id}</h1>
-        <p>{typeDescription}</p>
+        <Link to={`/${typeTitle}`} style={{textDecoration: 'none', color: 'black'}}><h1 className='title'>{typeTitle}</h1></Link>
+        <p className='description'>{typeDescription}</p>
         <div>
           {patternMapper}
         </div>

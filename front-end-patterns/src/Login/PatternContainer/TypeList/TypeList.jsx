@@ -45,7 +45,7 @@ class TypeList extends React.Component {
       } else if(index === this.props.patternTypes.length - 1){
         return(
           <div className='column'>
-            <div className='card'>
+            <div className='loneCard'>
               <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
               <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
