@@ -252,6 +252,7 @@ apiCall = async (array) => {
       });
       console.log('this is the editTypeResponse', editTypeResponse);
       const parsedResponse = await editTypeResponse.json();
+      /**
       const editedPatternTypeArray = this.state.patternTypes.map((patternType) => {
         if(patternType._id === this.state.typeToEdit._id){
           patternType = parsedResponse.data
@@ -262,6 +263,12 @@ apiCall = async (array) => {
         patternTypes: editedPatternTypeArray,
         typeEditorShowing: false,
       });
+      **/
+      this.getPatternTypes();
+      this.getPatterns();
+      this.setState({
+        typeEditorShowing: false,
+      })
     } catch(err){
       console.log(err);
     }
@@ -442,7 +449,7 @@ apiCall = async (array) => {
     console.log('This is match.params.id', match.params.id);
     console.log('This is patternFilter.length', this.state.patternFilter.length);
     console.log('this is patternFilter in patternPage', this.state.patternFilter);
-    if(this.state.patternFilter.length === 0){
+    if(this.state.patternFilter !== 'panda'){
      console.log('length is zero!!!!!!!!');
      console.log('PATTERN TYPES in state', this.state.patternTypes);
      const matchedPattern = this.state.patterns.find(pattern => pattern.title === match.params.id);
@@ -488,7 +495,7 @@ apiCall = async (array) => {
           return(
             <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
           )
-        }
+        } //Here I could return an else if that says if the map.text is a return then produce a break tag.
       })
 
         return(
@@ -534,7 +541,7 @@ apiCall = async (array) => {
     console.log('This is match.params.id', match.params.id);
     console.log('This is patternFilter.length', this.state.patternFilter.length);
     console.log('this is patternFilter in patternPage', this.state.patternFilter);
-    if(this.state.patternFilter.length === 0){
+    if(this.state.patternFilter !== 'panda'){
      console.log('length is zero!!!!!!!!');
      console.log('PATTERN TYPES in state', this.state.patternTypes);
      const matchedType = this.state.patternTypes.find(patternType => patternType.patternType === match.params.id);
