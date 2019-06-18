@@ -17,7 +17,7 @@ class TypeList extends React.Component {
       console.log('typelist', patternType, index);
       if(index % 2 !== 0){
         return(
-          <div className='row'>
+          <div className='row' key={'typeMapper' + this.props.patternTypes[index - 1].patternType}>
             <div className='card'>
               <Link to={`/${this.props.patternTypes[index - 1].patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
               <div className='container' >
@@ -29,7 +29,7 @@ class TypeList extends React.Component {
               {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, this.props.patternTypes[index - 1])}>Edit</button>
               <button className='noClickButton' onClick={this.props.deletePatternType.bind(null, this.props.patternTypes[index - 1]._id)}>Delete</button></div> : null}
             </div>
-            <div className='cardRight'>
+            <div className='cardRight' key={'typeMapper' + patternType.patternType}>
               <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
               <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
@@ -44,7 +44,7 @@ class TypeList extends React.Component {
         )
       } else if(index === this.props.patternTypes.length - 1){
         return(
-          <div className='column'>
+          <div className='column' key={'typeMapper' + patternType.patternType}>
             <div className='loneCard'>
               <Link to={`/${patternType.patternType}/`} style={{textDecoration: 'none', color: 'black'}}>
               <div className='container' >

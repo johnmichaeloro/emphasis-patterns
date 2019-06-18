@@ -473,33 +473,33 @@ apiCall = async (array) => {
       const sentenceColorer = textMapper.map((map) => {
         if(map.color === 'yellow') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
           )
         } else if(map.color === 'green') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
           )
         } else if(map.color === 'lightBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
           )
         } else if(map.color === 'darkBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
           )
         } else if(map.color === 'lightGreen') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
           )
         } else if(map.color === 'fadedBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
+            <span key={'entryMapperKey' + map.text} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
           )
         } //Here I could return an else if that says if the map.text is a return then produce a break tag.
       })
 
         return(
-        <div>
+        <div key={'entryPage' + pattern._id}>
         {this.state.modalShowing? <Redirect to='/' /> : null}
           <div className='row'>
             <div className='patternCard'>
@@ -564,38 +564,38 @@ apiCall = async (array) => {
       const sentenceColorer = textMapper.map((map) => {
         if(map.color === 'yellow') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#FFF459'}}>{map.text}</span>
           )
         } else if(map.color === 'green') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#4DFC9C'}}>{map.text}</span>
           )
         } else if(map.color === 'lightBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#59F1FF'}}>{map.text}</span>
           )
         } else if(map.color === 'darkBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#598CF8'}}>{map.text}</span>
           )
         } else if(map.color === 'lightGreen') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#CCFFE1'}}>{map.text}</span>
           )
         } else if(map.color === 'fadedBlue') {
           return(
-            <span key={pattern._id} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
+            <span key={'patternMapperKey' + map.text} style={{backgroundColor: '#D2F9FF'}}>{map.text}</span>
           )
         }
       })
 
         return(
-        <div>
+        <div key={'patternPage' + pattern._id}>
         {this.state.modalShowing? <Redirect to='/' /> : null}
           <div className='row'>
             <div className='patternCard'>
               <Link to={`/${typeTitle}/${pattern.title}`} style={{textDecoration: 'none', color: 'black'}}>
-              <div key={pattern._id} className='container' onClick={this.setEntryPattern.bind(null, pattern)}>
+              <div key={'patternPageContainer' + pattern._id} className='container' onClick={this.setEntryPattern.bind(null, pattern)}>
                 <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
                 <br/>
                 <span className='description'>{sentenceColorer}</span><br/>
