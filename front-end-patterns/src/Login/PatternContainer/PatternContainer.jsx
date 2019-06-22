@@ -524,12 +524,14 @@ apiCall = async (array) => {
               <div key={pattern._id} className='container'>
                 <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
                 <br/>
-                <span className='description'>{sentenceColorer}</span><br/>
-                <br/>
-                <span className='description'>Published by {pattern.publication} in {pattern.year}.</span>
-                <br/>
-                <span className='description'>{pattern.commentary}</span>
-                <br/>
+                <div className='cardContent'>
+                  <span className='description'>{sentenceColorer}</span><br/>
+                  <br/>
+                  <span className='description'>{pattern.title} was originally published by {pattern.publication} in {pattern.year}.</span>
+                  <br/><br/>
+                  <span className='description'>{pattern.commentary}</span>
+                  <br/><br/>
+                </div>
                 {pattern.url ? <span className='description'>Read the original text <a href={pattern.url}>here</a>.</span> : null}
               </div>
               {this.props.loggedIn ? <div>
@@ -617,9 +619,11 @@ apiCall = async (array) => {
               <Link to={`/${typeTitle}/${pattern.title}`} style={{textDecoration: 'none', color: 'black'}}>
               <div key={'patternPageContainer' + pattern._id} className='container' onClick={this.setEntryPattern.bind(null, pattern)}>
                 <span className='patternTitle'>From {pattern.title} by {pattern.author}</span><br/>
-                <br/>
-                <span className='description'>{sentenceColorer}</span><br/>
-                <br/>
+                <div className='cardContent'>
+                  <br/>
+                  <span className='description'>{sentenceColorer}</span><br/>
+                  <br/>
+                </div>
               </div>
               </Link>
               {this.props.loggedIn ? <div>

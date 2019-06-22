@@ -23,7 +23,9 @@ class TypeList extends React.Component {
               <div className='container' >
                 <span className='title'>{this.props.patternTypes[index - 1].patternType}</span><br/>
                 <br/>
-                <span className='description'>{this.props.patternTypes[index - 1].description}</span><br/>
+                <div className='cardContent'>
+                  <span className='description'>{this.props.patternTypes[index - 1].description}</span><br/>
+                </div>
               </div>
               </Link>
               {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, this.props.patternTypes[index - 1])}>Edit</button>
@@ -34,7 +36,9 @@ class TypeList extends React.Component {
               <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
                 <br/>
-                <span className='description'>{patternType.description}</span><br/>
+                <div className='cardContent'>
+                  <span className='description'>{patternType.description}</span><br/>
+                </div>
               </div>
               </Link>
               {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, patternType)}>Edit</button>
@@ -50,7 +54,9 @@ class TypeList extends React.Component {
               <div className='container' >
                 <span className='title'>{patternType.patternType}</span><br/>
                 <br/>
-                <span className='description'>{patternType.description}</span><br/>
+                <div className='cardContent'>
+                  <span className='description'>{patternType.description}</span><br/>
+                </div>
               </div>
               </Link>
               {this.props.loggedIn ? <div><button className='noClickButton' onClick={this.props.showTypeEditor.bind(null, patternType)}>Edit</button>

@@ -44,47 +44,62 @@ class CreatePattern extends Component {
 
     console.log(descriptionMapper, 'this is descriptionMapper');
     return(
-      <div>
+      <div className='row'>
+      <div className='patternCard'>
+      <div className='container'>
         <form onSubmit={this.props.addPattern.bind(null, this.state)}>
-          <h2>Add a pattern to the catalog</h2>
-          <label>
-            Title: <input type='text' name='title' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            Author: <input type='text' name='author' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            Publication: <input type='text' name='publication' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            Year: <input type='text' name='year' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            URL: <input type='text' name='url' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            Pattern Type: <select name='patternType' onChange={this.updatePattern}><option>Choose a type</option>{this.typeMapper}</select>
-          </label>
-          <br/>
-          <label>
-              Description: <input name='description' onChange={this.updatePattern} value={descriptionMapper} />
-          </label>
-          <br/>
-          <label>
-            Text: <textarea name='text' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <label>
-            Commentary: <input name='commentary' onChange={this.updatePattern} />
-          </label>
-          <br/>
-          <input type='submit'/>
+          <h2 className='title'>New Pattern</h2>
+          <div className='cardContent'>
+            <label className='adminText'>
+              Title <br/> <input className='adminInput' type='text' name='title' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Author <br/> <input className='adminInput' type='text' name='author' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Publication <br/> <input className='adminInput' type='text' name='publication' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Year <br/> <input className='adminInput' type='text' name='year' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              URL <br/> <input className='adminInput' type='text' name='url' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Pattern Type <br/> <select className='adminMenu' name='patternType' onChange={this.updatePattern}><option>Choose a type</option>{this.typeMapper}</select>
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Description <br/> <input className='adminInput' name='description' onChange={this.updatePattern} value={descriptionMapper} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Text <br/> <textarea className='adminTextArea' name='text' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <label className='adminText'>
+              Commentary <br/> <textarea className='adminTextArea' name='commentary' onChange={this.updatePattern} />
+            </label>
+            <br/>
+            <br/>
+            <input className='adminSubmit' type='submit'/>
+          </div>
         </form>
+      </div>
+      </div>
       </div>
     )
   }
