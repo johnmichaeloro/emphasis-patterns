@@ -44,7 +44,7 @@ body {
   font-size: 16px;
 }
 
-.adminText, .adminMenu, .adminSubmit {
+.adminText, .adminMenu {
   margin-left: 5%;
   margin-top: 1%;
 }
@@ -149,6 +149,14 @@ body {
 
 textarea {
   resize: none;
+}
+
+.adminSubmit {
+  margin-top: 2%;
+}
+
+.buttonHolder {
+  text-align: center;
 }
 
 button, .adminSubmit {

@@ -19,17 +19,25 @@ class CreateType extends React.Component {
 
   render(){
     return(
-      <div>
+      <div className='row'>
+      <div className='patternCard'>
+      <div className='container'>
         <form onSubmit={this.props.addPatternType.bind(null, this.state)}>
-          <h2>Add a Type to the Catalog</h2>
-          <label>
-            Name: <input type='text' name='patternType' onChange={this.updateType} /><br/>
+          <h2 className='title'>New Category</h2>
+          <div className='cardContent'>
+          <label className='adminText'>
+            Name <br/> <input className='adminInput' type='text' name='patternType' onChange={this.updateType} /><br/>
           </label>
-          <label>
-            Description: <input type='text' name='description' onChange={this.updateType} /><br/>
+          <label className='adminText'>
+            Description <br/> <input className='adminInput' type='text' name='description' onChange={this.updateType} /><br/>
           </label>
-          <input type='submit' />
+          <div className='buttonHolder'>
+            <input className='adminSubmit' type='submit' />
+          </div>
+          </div>
         </form>
+      </div>
+      </div>
       </div>
     )
   }

@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-//Bug in the description input field that creates a series of commas. Probably due to the descriptionMapper not returning anything when the component mounts. To fix it I either need to refine the descriptionMapper or filter out the commas.
-
 class CreatePattern extends Component {
   constructor(props){
     super(props);
@@ -95,7 +93,9 @@ class CreatePattern extends Component {
             </label>
             <br/>
             <br/>
-            <input className='adminSubmit' type='submit'/>
+            <div className='buttonHolder'>
+              <input className='adminSubmit' type='submit'/>
+            </div>
           </div>
         </form>
       </div>
