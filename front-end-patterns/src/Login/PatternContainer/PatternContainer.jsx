@@ -432,6 +432,15 @@ apiCall = async (array) => {
     })
   }
 
+  cancelForm = () => {
+    this.setState({
+      registrationShowing: false,
+      createShowing: false,
+      typeCreatorShowing: false,
+      typeListShowing: true,
+    })
+  }
+
   typePage = () => {
     return(
       <div>
@@ -447,15 +456,15 @@ apiCall = async (array) => {
 
         </div> : null}
 
-        {this.state.registrationShowing ? <Registration hideRegistration={this.hideRegistration} /> : null}
+        {this.state.registrationShowing ? <Registration hideRegistration={this.hideRegistration} cancelForm={this.cancelForm} /> : null}
 
-        {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} /> : null}
+        {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} cancelForm={this.cancelForm} /> : null}
 
-        {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} /> : null}
+        {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} cancelForm={this.cancelForm} /> : null}
 
-        {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern}/> : null}
+        {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern} cancelForm={this.cancelForm} cancelForm={this.cancelForm}/> : null}
 
-        {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
+        {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} cancelForm={this.cancelForm} /> : null}
 
         {this.state.typeListShowing ? <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/> : null}
 

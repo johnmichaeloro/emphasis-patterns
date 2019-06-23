@@ -69,6 +69,7 @@ const PatternEditor = (props) => {
         <br/>
         <div className='buttonHolder'>
           <input className='adminSubmit' type='submit'/>
+          <button onClick={this.props.cancelForm}>Cancel</button>
         </div>
         </div>
       </form>
