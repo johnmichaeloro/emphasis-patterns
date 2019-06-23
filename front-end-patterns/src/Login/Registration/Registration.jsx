@@ -38,12 +38,32 @@ class Registration extends React.Component {
   }
   render(){
     return(
-      <form onSubmit={this.handleSubmit}>
-        Username: <input type='text' name='username' onChange={this.handleChange} />
-        Email: <input type='text' name='email' onChange={this.handleChange}/>
-        Password: <input type='password' name='password' onChange={this.handleChange}/>
-        <input type='submit' />
-      </form>
+      <div className='row'>
+      <div className='patternCard'>
+      <div className='container'>
+        <form onSubmit={this.handleSubmit}>
+          <h2 className='title'>New User</h2>
+          <div className='cardContent'>
+          <label className='adminText'>
+            Username <br/> <input className='adminInput' type='text' name='username' onChange={this.handleChange} /> <br/>
+          </label>
+          <br/>
+          <label className='adminText'>
+            Email <br/> <input className='adminInput' type='text' name='email' onChange={this.handleChange}/> <br/>
+          </label>
+          <br/>
+          <label className='adminText'>
+            Password <br/> <input className='adminInput' type='password' name='password' onChange={this.handleChange}/> <br/>
+          </label>
+          <br/>
+            <div className='buttonHolder'>
+              <input className='adminSubmit' type='submit' />
+            </div>
+          </div>
+        </form>
+      </div>
+      </div>
+      </div>
     )
   }
 }
