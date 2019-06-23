@@ -16,47 +16,64 @@ const PatternEditor = (props) => {
 
 
   return(
-    <div>
+    <div className='row'>
+    <div className='patternCard'>
+    <div className='container'>
       <form onSubmit={props.editPattern}>
-        <h2>Edit a Pattern</h2>
-        <label>
-          Edit Title: <input type='text' name='title' onChange={props.handleFormChange} value={props.patternToEdit.title} />
+        <h2 className='title'>Edit Pattern</h2>
+        <div className='cardContent'>
+        <label className='adminText'>
+          <b>Title</b> <br/> <input className='adminInput' type='text' name='title' onChange={props.handleFormChange} value={props.patternToEdit.title} />
         </label>
         <br/>
-        <label>
-          Edit Author: <input type='text' name='author' onChange={props.handleFormChange} value={props.patternToEdit.author} />
+        <br/>
+        <label className='adminText'>
+          <b>Author</b> <br/> <input className='adminInput' type='text' name='author' onChange={props.handleFormChange} value={props.patternToEdit.author} />
         </label>
         <br/>
-        <label>
-          Edit Publication: <input type='text' name='publication' onChange={props.handleFormChange} value={props.patternToEdit.publication} />
+        <br/>
+        <label className='adminText'>
+          <b>Publication</b> <br/> <input className='adminInput' type='text' name='publication' onChange={props.handleFormChange} value={props.patternToEdit.publication} />
         </label>
         <br/>
-        <label>
-          Edit Year: <input type='number' name='year' onChange={props.handleFormChange} value={props.patternToEdit.year} />
+        <br/>
+        <label className='adminText'>
+          <b>Year</b> <br/> <input className='adminInput' type='number' name='year' onChange={props.handleFormChange} value={props.patternToEdit.year} />
         </label>
         <br/>
-        <label>
-          Edit URL: <input type='text' name='url' onChange={props.handleFormChange} value={props.patternToEdit.url} />
+        <br/>
+        <label className='adminText'>
+          <b>URL</b> <br/> <input className='adminInput' type='text' name='url' onChange={props.handleFormChange} value={props.patternToEdit.url} />
         </label>
         <br/>
-        <label>
-        Edit Pattern Type: <select name='patternType' onChange={props.handleFormChange}>{typeMapper}</select>
+        <br/>
+        <label className='adminText'>
+        <b>Pattern Type</b> <br/> <select className='adminMenu' name='patternType' onChange={props.handleFormChange}>{typeMapper}</select>
         </label>
         <br/>
-        <label>
-          Edit Description: <input name='description' onChange={props.handleFormChange} value={props.patternToEdit.patternType.description} />
+        <br/>
+        <label className='adminText'>
+          <b>Description</b> <br/> <input className='adminInput' name='description' onChange={props.handleFormChange} value={props.patternToEdit.patternType.description} />
         </label>
         <br/>
-        <label>
-          Edit Text: <input name='text' onChange={props.handleFormChange} value={props.patternToEdit.text[0].text} />
+        <br/>
+        <label className='adminText'>
+          <b>Text</b> <br/> <textarea className='adminTextArea' name='text' onChange={props.handleFormChange} value={props.patternToEdit.text[0].text} />
         </label>
         <br/>
-        <label>
-          Edit Commentary: <input name='commentary' onChange={props.handleFormChange} value={props.patternToEdit.commentary} />
+        <br/>
+        <label className='adminText'>
+          <b>Commentary</b> <br/> <textarea className='adminTextArea' name='commentary' onChange={props.handleFormChange} value={props.patternToEdit.commentary} />
         </label>
         <br/>
-        <input type='submit'/>
+        <br/>
+        <div className='buttonHolder'>
+          <input className='adminSubmit' type='submit'/>
+        </div>
+        </div>
       </form>
+    </div>
+    </div>
     </div>
   )
 }
