@@ -45,7 +45,7 @@ class Registration extends React.Component {
           <h2 className='title'>New User</h2>
           <div className='cardContent'>
           <label className='adminText'>
-            Username <br/> <input className='adminInput' type='text' name='username' onChange={this.handleChange} /> <br/>
+            <b>Username</b> <br/> <input className='adminInput' type='text' name='username' onChange={this.handleChange} /> <br/>
           </label>
           <br/>
           <label className='adminText'>
@@ -53,7 +53,7 @@ class Registration extends React.Component {
           </label>
           <br/>
           <label className='adminText'>
-            Password <br/> <input className='adminInput' type='password' name='password' onChange={this.handleChange}/> <br/>
+            <b>Password</b> <br/> <input className='adminInput' type='password' name='password' onChange={this.handleChange}/> <br/>
           </label>
           <br/>
             <div className='buttonHolder'>

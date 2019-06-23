@@ -58,6 +58,7 @@ class PatternContainer extends Component {
       typeEditorShowing: false,
       typeCreatorShowing: false,
       registrationShowing: false,
+      typeListShowing: true,
     }
   }
 
@@ -399,6 +400,9 @@ apiCall = async (array) => {
   showTypeCreator = () => {
     console.log('this is show type creator');
     this.setState({
+      typeListShowing: false,
+      registrationShowing: false,
+      createShowing: false,
       typeCreatorShowing: true
     })
   }
@@ -406,13 +410,19 @@ apiCall = async (array) => {
   showCreate = () => {
     console.log('this is show create');
     this.setState({
+      typeListShowing: false,
+      registrationShowing: false,
+      typeCreatorShowing: false,
       createShowing: true,
     })
   }
 
   showRegistration = () => {
     this.setState({
-      registrationShowing: true
+      typeListShowing: false,
+      createShowing: false,
+      typeCreatorShowing: false,
+      registrationShowing: true,
     })
   }
 
@@ -447,7 +457,7 @@ apiCall = async (array) => {
 
         {this.state.modalShowing ? <PatternEditor patternToEdit={this.state.patternToEdit} patternTypes={this.state.patternTypes} editPattern={this.editPattern} handleFormChange={this.handleFormChange} /> : null}
 
-        {this.state.modalShowing ? null : <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/>}
+        {this.state.typeListShowing ? <TypeList patternTypes={this.state.patternTypes} patterns={this.state.patterns} showTypeEditor={this.showTypeEditor} deletePatternType={this.deletePatternType} loggedIn={this.props.loggedIn}/> : null}
 
       </div>
     )
