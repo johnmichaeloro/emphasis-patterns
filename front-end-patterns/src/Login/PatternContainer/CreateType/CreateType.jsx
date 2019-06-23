@@ -26,11 +26,11 @@ class CreateType extends React.Component {
           <h2 className='title'>New Category</h2>
           <div className='cardContent'>
           <label className='adminText'>
-            Name <br/> <input className='adminInput' type='text' name='patternType' onChange={this.updateType} /><br/>
+            <b>Name</b> <br/> <input className='adminInput' type='text' name='patternType' onChange={this.updateType} /><br/>
           </label>
           <br/>
           <label className='adminText'>
-            Description <br/> <input className='adminInput' type='text' name='description' onChange={this.updateType} /><br/>
+            <b>Description</b> <br/> <input className='adminInput' type='text' name='description' onChange={this.updateType} /><br/>
           </label>
           <br/>
           <div className='buttonHolder'>

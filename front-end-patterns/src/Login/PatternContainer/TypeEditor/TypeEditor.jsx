@@ -2,17 +2,28 @@ import React from 'react';
 
 const TypeEditor = (props) => {
     return(
-      <div>
+      <div className='row'>
+      <div className='patternCard'>
+      <div className='container'>
         <form onSubmit={props.editPatternType}>
-          <h2>Edit a Type</h2>
-          <label>
-            Name: <input type='text' name='patternType' onChange={props.handleTypeChange} value={props.typeToEdit.patternType}/><br/>
+          <h2 className='title'>Edit Category</h2>
+          <div className='cardContent'>
+          <label className='adminText'>
+            <b>Name</b> <br/> <input className='adminInput' type='text' name='patternType' onChange={props.handleTypeChange} value={props.typeToEdit.patternType}/><br/>
           </label>
-          <label>
-            Description: <input type='text' name='description' onChange={props.handleTypeChange} value={props.typeToEdit.description}/><br/>
+          <br/>
+          <br/>
+          <label className='adminText'>
+            <b>Description</b> <br/> <input className='adminInput' type='text' name='description' onChange={props.handleTypeChange} value={props.typeToEdit.description}/><br/>
           </label>
-          <input type='submit' />
+          <br/>
+          <div className='buttonHolder'>
+            <input className='adminSubmit' type='submit' />
+          </div>
+          </div>
         </form>
+      </div>
+      </div>
       </div>
     )
 }

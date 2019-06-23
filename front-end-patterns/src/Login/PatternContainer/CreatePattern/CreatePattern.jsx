@@ -49,47 +49,47 @@ class CreatePattern extends Component {
           <h2 className='title'>New Pattern</h2>
           <div className='cardContent'>
             <label className='adminText'>
-              Title <br/> <input className='adminInput' type='text' name='title' onChange={this.updatePattern} />
+              <b>Title</b> <br/> <input className='adminInput' type='text' name='title' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Author <br/> <input className='adminInput' type='text' name='author' onChange={this.updatePattern} />
+              <b>Author</b> <br/> <input className='adminInput' type='text' name='author' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Publication <br/> <input className='adminInput' type='text' name='publication' onChange={this.updatePattern} />
+              <b>Publication</b> <br/> <input className='adminInput' type='text' name='publication' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Year <br/> <input className='adminInput' type='text' name='year' onChange={this.updatePattern} />
+              <b>Year</b> <br/> <input className='adminInput' type='text' name='year' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              URL <br/> <input className='adminInput' type='text' name='url' onChange={this.updatePattern} />
+              <b>URL</b> <br/> <input className='adminInput' type='text' name='url' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Pattern Type <br/> <select className='adminMenu' name='patternType' onChange={this.updatePattern}><option>Choose a type</option>{this.typeMapper}</select>
+              <b>Pattern Type</b> <br/> <select className='adminMenu' name='patternType' onChange={this.updatePattern}><option>Choose a type</option>{this.typeMapper}</select>
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Description <br/> <input className='adminInput' name='description' onChange={this.updatePattern} value={descriptionMapper} />
+              <b>Description</b> <br/> <input className='adminInput' name='description' onChange={this.updatePattern} value={descriptionMapper} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Text <br/> <textarea className='adminTextArea' name='text' onChange={this.updatePattern} />
+              <b>Text</b> <br/> <textarea className='adminTextArea' name='text' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
             <label className='adminText'>
-              Commentary <br/> <textarea className='adminTextArea' name='commentary' onChange={this.updatePattern} />
+              <b>Commentary</b> <br/> <textarea className='adminTextArea' name='commentary' onChange={this.updatePattern} />
             </label>
             <br/>
             <br/>
