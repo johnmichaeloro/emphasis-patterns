@@ -20,6 +20,16 @@ body {
 
 }
 
+.loginText {
+
+}
+
+.loginInput{
+  width: 100px;
+  font-size: 16px;
+  margin-right: 2%;
+}
+
 .adminInput {
   width: 90%;
   height: 22px;
@@ -159,10 +169,11 @@ textarea {
   text-align: center;
 }
 
-button, .adminSubmit {
+button, .adminSubmit, .loginSubmit {
   font-family: 'Permanent Marker', cursive;
   font-size: 16px;
   border: none;
+  cursor: pointer;
 }
 
 button:hover{

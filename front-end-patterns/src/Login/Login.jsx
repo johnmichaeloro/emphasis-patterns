@@ -94,11 +94,12 @@ class Login extends React.Component {
 
         {this.state.showMenu ? <div><a className='menuLinks' href='https://emphasis.ai/'>Emphasis AI</a> <a className='menuLinks' href='http://emphasisdb.herokuapp.com/'>Emphasis DB</a><button className='menuLinks' onClick={this.renderLoginForm}>Login</button></div> : null}
 
-        {this.state.showLogin ? <form id='loginForm' onSubmit={this.handleSubmit}>
-          Username: <input type='text' name='username' onChange={this.handleChange} />
-          Password: <input type='password' name='password' onChange={this.handleChange} />
-          <input type='submit' />
-        </form> : null}
+        {this.state.showLogin ?
+            <form id='loginForm' onSubmit={this.handleSubmit}>
+                Username <input className='loginInput' type='text' name='username' onChange={this.handleChange} />
+                Password <input className='loginInput' type='password' name='password' onChange={this.handleChange} />
+                <input className='loginSubmit' type='submit' />
+            </form> : null}
 
         <p>© 2019 Emphasis AI</p>
 
