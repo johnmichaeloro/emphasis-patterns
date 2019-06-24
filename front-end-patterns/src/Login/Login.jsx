@@ -9,14 +9,25 @@ class Login extends React.Component {
       username: '',
       password: '',
       showLogin: false,
-      showMenu: true
+      showMenu: true,
+      formDisabled: true
     }
   };
+
+  enableForm = () => {
+    if(this.state.username.length !== 0 && this.state.password.length !== 0){
+      console.log('*******FORM ENABLED******');
+      this.setState({
+        formDisabled: false
+      })
+    }
+  }
+
   handleChange = (e) => {
     console.log(this.state, 'this is handleChange');
     this.setState({
       [e.target.name]: e.target.value
-    })
+    }, () => this.enableForm())
   };
 
   clearForm = () => {
@@ -98,7 +109,7 @@ class Login extends React.Component {
             <form id='loginForm' onSubmit={this.handleSubmit}>
                 Username <input className='loginInput' type='text' name='username' onChange={this.handleChange} />
                 Password <input className='loginInput' type='password' name='password' onChange={this.handleChange} />
-                <input className='loginSubmit' type='submit' />
+                <input className='loginSubmit' type='submit' disabled={this.state.formDisabled}/>
             </form> : null}
 
         <p>© 2019 Emphasis AI</p>

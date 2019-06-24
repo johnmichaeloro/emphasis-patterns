@@ -49,7 +49,7 @@ class Registration extends React.Component {
           </label>
           <br/>
           <label className='adminText'>
-            Email <br/> <input className='adminInput' type='text' name='email' onChange={this.handleChange}/> <br/>
+            <b>Email</b> <br/> <input className='adminInput' type='text' name='email' onChange={this.handleChange}/> <br/>
           </label>
           <br/>
           <label className='adminText'>

@@ -22,8 +22,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 //Then I need to account for the changes that will need to be made to the CRUD forms for the new property in the schema.
 //Then I need to add the new property to the mongoose schema, restart the server on a new db, and test the CRUD routes.
 
-//REGARDING THE EDIT AND DELETE ROUTE BUGS, it probably has to do with how the entry is being accessed after the update or deletion. I will probably need to make database calls after updatte and delete to fix this.
-
 class PatternContainer extends Component {
   constructor(props){
     super(props);
@@ -450,7 +448,7 @@ apiCall = async (array) => {
 
           <button className='menuLinks' onClick={this.showRegistration}>Register a User</button>
 
-          <button className='menuLinks' onClick={this.showTypeCreator}>Create a Type</button>
+          <button className='menuLinks' onClick={this.showTypeCreator}>Create a Category</button>
 
           <button className='menuLinks' onClick={this.showCreate}>Create a Pattern</button>
 

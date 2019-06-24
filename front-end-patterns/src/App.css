@@ -23,7 +23,6 @@ body {
 .loginInput{
   width: 100px;
   font-size: 16px;
-  margin-right: 2%;
 }
 
 .adminInput {
@@ -166,6 +165,7 @@ textarea {
 }
 
 button, .adminSubmit, .loginSubmit {
+  margin-right: 4%;
   font-family: 'Permanent Marker', cursive;
   font-size: 16px;
   border: none;
