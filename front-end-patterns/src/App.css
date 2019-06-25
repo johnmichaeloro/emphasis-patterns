@@ -172,6 +172,10 @@ button, .adminSubmit, .loginSubmit {
   cursor: pointer;
 }
 
+.loginSubmit:disabled {
+  color: black;
+}
+
 button:hover{
   cursor: pointer;
 }

@@ -10,7 +10,8 @@ class Login extends React.Component {
       password: '',
       showLogin: false,
       showMenu: true,
-      formDisabled: true
+      formDisabled: true,
+      loginFail: false,
     }
   };
 
@@ -32,6 +33,11 @@ class Login extends React.Component {
 
   clearForm = () => {
     document.getElementById('loginForm').reset();
+    this.setState({
+      username: '',
+      password: '',
+      formDisabled: true,
+    })
   }
 
   handleSubmit = async (e) => {
@@ -50,15 +56,20 @@ class Login extends React.Component {
       if(parsedResponse.data === 'login successful'){
         this.props.loginToggle();
         console.log('login successful');
+      } else {
+        console.log('login failed');
       };
       this.clearForm();
       this.setState({
-        showLogin: false
+        showLogin: false,
+        showMenu: true,
+        loginFail: true,
       })
     } catch(err){
         console.log(err);
     }
   }
+
   handleLogout = async (e) => {
     e.preventDefault();
     console.log('You are logged out.');
@@ -79,11 +90,21 @@ class Login extends React.Component {
       console.log(err);
     }
   }
+
   renderLoginForm = (e) => {
     e.preventDefault();
     this.setState({
       showMenu: false,
       showLogin: true,
+      loginFail: false,
+    })
+  }
+
+  hideLogin = (e) => {
+    e.preventDefault();
+    this.setState({
+      showLogin: false,
+      showMenu: true,
     })
   }
 
@@ -107,11 +128,12 @@ class Login extends React.Component {
 
         {this.state.showLogin ?
             <form id='loginForm' onSubmit={this.handleSubmit}>
-                Username <input className='loginInput' type='text' name='username' onChange={this.handleChange} />
-                Password <input className='loginInput' type='password' name='password' onChange={this.handleChange} />
+                <b>Username</b> <input className='loginInput' type='text' name='username' onChange={this.handleChange} />
+                <b>Password</b> <input className='loginInput' type='password' name='password' onChange={this.handleChange} />
                 <input className='loginSubmit' type='submit' disabled={this.state.formDisabled}/>
+                <button onClick={this.hideLogin}>Cancel</button>
             </form> : null}
-
+            {this.state.loginFail ? <span style={{'color': 'red'}}>Login failed.</span> : null}
         <p>© 2019 Emphasis AI</p>
 
       </div>

@@ -24,6 +24,10 @@ router.post('/login', async (req, res) => {
           });
         } else{
           console.log(err);
+          res.json({
+            status: 401,
+            data: 'login failed'
+          });
         }
       }
     });
