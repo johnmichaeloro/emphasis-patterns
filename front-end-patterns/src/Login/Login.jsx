@@ -58,12 +58,15 @@ class Login extends React.Component {
         console.log('login successful');
       } else {
         console.log('login failed');
+        this.setState({
+          showMenu: true,
+          loginFail: true,
+          showLogin: false,
+        })
       };
       this.clearForm();
       this.setState({
         showLogin: false,
-        showMenu: true,
-        loginFail: true,
       })
     } catch(err){
         console.log(err);

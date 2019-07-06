@@ -315,6 +315,7 @@ apiCall = async (array) => {
         this.setState({
           patterns: editedPatternArray,
           modalShowing: false,
+          typeListShowing: true,
         });
         await this.state.patternTypes.forEach((patternType) => {
           if(patternType._id === this.state.patternToEdit.patternType._id){
@@ -346,6 +347,7 @@ apiCall = async (array) => {
         this.setState({
           patterns: editedPatternArray,
           modalShowing: false,
+          typeListShowing: true,
         });
         await this.state.patternTypes.forEach((patternType) => {
           if(patternType._id === this.state.patternToEdit.patternType._id){
@@ -656,7 +658,7 @@ apiCall = async (array) => {
     return(
       <div>
         <Link to={`/${typeTitle}`} style={{textDecoration: 'none', color: 'black'}}><h1 className='title'>{typeTitle}</h1></Link>
-        <p className='description'>{typeDescription}</p>
+        <p className='categoryDescription'>{typeDescription}</p>
         <div>
           {patternMapper}
         </div>
