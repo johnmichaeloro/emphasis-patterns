@@ -8,33 +8,28 @@ import React from 'react';
 
 //The formDisabled property would be in PatternContainer. I would need to design the if check so that the other forms wouldn't be enabled inappropriately. How would I do this?
 
-class TypeEditor extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      formDisabled: true,
-    }
-  }
-  render(){
+//I need to find out what I'm validating for. I can't send an empty field. How do I prevent an empty field from being sent? I might need to create validation functions for each form. If I did not, it's possible that the formEnable function would not work, because the first fields in its if else checks would be empty.
+
+const TypeEditor = (props) => {
     return(
       <div className='row'>
       <div className='patternCard'>
       <div className='container'>
-        <form onSubmit={this.props.editPatternType}>
+        <form onSubmit={props.editPatternType}>
           <h2 className='title'>Edit Category</h2>
           <div className='cardContent'>
           <label className='adminText'>
-            <b>Name</b> <br/> <input className='adminInput' type='text' name='patternType' onChange={this.props.handleTypeChange} value={this.props.typeToEdit.patternType}/><br/>
+            <b>Name</b> <br/> <input className='adminInput' type='text' name='patternType' onChange={props.handleTypeChange} value={props.typeToEdit.patternType}/><br/>
           </label>
           <br/>
           <br/>
           <label className='adminText'>
-            <b>Description</b> <br/> <input className='adminInput' type='text' name='description' onChange={this.props.handleTypeChange} value={this.props.typeToEdit.description}/><br/>
+            <b>Description</b> <br/> <input className='adminInput' type='text' name='description' onChange={props.handleTypeChange} value={props.typeToEdit.description}/><br/>
           </label>
           <br/>
           <div className='buttonHolder'>
-            <input className='adminSubmit' type='submit' disabled={this.state.formDisabled}/>
-            <button onClick={this.props.cancelForm}>Cancel</button>
+            <input className='adminSubmit' type='submit' disabled={props.formDisabled}/>
+            <button onClick={props.cancelForm}>Cancel</button>
           </div>
           </div>
         </form>
@@ -42,7 +37,6 @@ class TypeEditor extends React.Component {
       </div>
       </div>
     )
-  }
 }
 
 export default TypeEditor;

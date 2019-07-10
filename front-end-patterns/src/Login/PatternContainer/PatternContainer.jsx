@@ -51,6 +51,7 @@ class PatternContainer extends Component {
         }],
         commentary: ''
       },
+      formDisabled: true,
       modalShowing: false,
       createShowing: false,
       typeEditorShowing: false,
@@ -131,7 +132,8 @@ getPatternTypes = async () => {
       console.log('this is the parsedResponse in addType', parsedResponse);
       this.setState({
         patternTypes: [...this.state.patternTypes, parsedResponse.data],
-        typeCreatorShowing: false
+        typeCreatorShowing: false,
+        typeListShowing: true,
       });
     } catch(err){
       console.log(err);
@@ -183,6 +185,7 @@ apiCall = async (array) => {
       this.setState({
         patterns: [...this.state.patterns, parsedResponse.data],
         createShowing: false,
+        typeListShowing: true,
       });
       console.log(this.state.patterns);
       this.getPatternTypes();
@@ -269,6 +272,7 @@ apiCall = async (array) => {
       this.getPatterns();
       this.setState({
         typeEditorShowing: false,
+        typeListShowing: true,
       })
     } catch(err){
       console.log(err);
@@ -360,15 +364,25 @@ apiCall = async (array) => {
     }
   }
 
+  enableForm = () => {
+    if(this.state.typeToEdit.patternType.length !== 0 && this.state.typeToEdit.description.length !== 0){
+      this.setState({
+        formDisabled: false,
+      })
+    }
+  }
+
   handleTypeChange = (e) => {
-    console.log('this is handleTypeChange');
+    console.log(e.target.value, 'this is handleTypeChange');
+    console.log(this.state.typeToEdit.patternType.length);
+    console.log(this.state.typeToEdit.description.length);
     this.setState({
       typeToEdit: {
         ...this.state.typeToEdit,
         [e.target.name]: e.target.value
       }
-    })
-  }
+    }, () => this.enableForm())
+  };
 
   handleFormChange = (e) => {
     console.log('this is handleFormChange');
@@ -383,6 +397,7 @@ apiCall = async (array) => {
   showTypeEditor = (patternType) => {
     console.log('this is showTypeEditor', patternType);
     this.setState({
+      typeListShowing: false,
       typeEditorShowing: true,
       typeToEdit: patternType
     })
@@ -460,7 +475,7 @@ apiCall = async (array) => {
 
         {this.state.typeCreatorShowing ? <CreateType addPatternType={this.addPatternType} cancelForm={this.cancelForm} /> : null}
 
-        {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} cancelForm={this.cancelForm} /> : null}
+        {this.state.typeEditorShowing ? <TypeEditor typeToEdit={this.state.typeToEdit} handleTypeChange={this.handleTypeChange} editPatternType={this.editPatternType} cancelForm={this.cancelForm} formDisabled={this.state.formDisabled}/> : null}
 
         {this.state.createShowing ? <CreatePattern patternTypes={this.state.patternTypes} addPattern={this.addPattern} cancelForm={this.cancelForm} cancelForm={this.cancelForm}/> : null}
 
@@ -566,7 +581,7 @@ apiCall = async (array) => {
     return(
       <div>
         <Link to={`/${patternTypeTitle}`} style={{textDecoration: 'none', color: 'black'}}><h1 className='title'>{patternTypeTitle}</h1></Link>
-        <p className='description'>{patternTypeDescription}</p>
+        <p className='categoryDescription'>{patternTypeDescription}</p>
         <div>
           {entryMapper}
         </div>
